@@ -1,6 +1,6 @@
 import React,{Fragment,useState} from "react";
-import{Link} from "react-router-dom";
-
+import{Link,Redirect} from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 const Register = ({ setAuth }) => {
@@ -23,9 +23,16 @@ const Register = ({ setAuth }) => {
                 body:JSON.stringify(body)
             });
             const parseRes = await response.json();
+            if(parseRes.jwtToken){
             localStorage.setItem("token",parseRes.jwtToken);
             setAuth(true);
-            console.log(parseRes);
+            toast.success("Register Successfully");
+        }
+        else{
+            setAuth(false);
+            toast.error(parseRes);
+        }
+            
         } catch (err) {
             console.error(err.message);
         }
