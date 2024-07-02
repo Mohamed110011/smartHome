@@ -1,8 +1,9 @@
 import React, { Fragment, useState , useEffect } from "react";
 import { toast } from "react-toastify";
+
 const Dashboard = ({ setAuth }) => {
     const [name, setName] = useState("");
-    async function getName() {
+    const getName = async () => {
         try {
             const response = await fetch("http://localhost:5000/dashboard/", {
                 method: "GET",
@@ -15,8 +16,9 @@ const Dashboard = ({ setAuth }) => {
         } catch (err) {
             console.error(err.message);
         }
-    }
-    const logout = async (e) => {
+    
+};
+    const logout = async e => {
         e.preventDefault();
         try {
             localStorage.removeItem("token");
@@ -25,8 +27,7 @@ const Dashboard = ({ setAuth }) => {
         } catch (err) {
             console.error(err.message);
         }
-        localStorage.removeItem("token");
-        setAuth(false);
+       
     };
     useEffect(() => {
         getName();

@@ -1,5 +1,5 @@
 import React,{Fragment,useState} from "react";
-import{Link,Redirect} from "react-router-dom";
+import{Link,Navigate} from "react-router-dom";
 import { toast } from "react-toastify";
 
 
@@ -10,6 +10,8 @@ const Register = ({ setAuth }) => {
         name:""
     });
     const{email,password,name} = inputs;
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
     const onChange = e => {
         setInputs({...inputs,[e.target.name]:e.target.value});
     };
@@ -23,8 +25,8 @@ const Register = ({ setAuth }) => {
                 body:JSON.stringify(body)
             });
             const parseRes = await response.json();
-            if(parseRes.jwtToken){
-            localStorage.setItem("token",parseRes.jwtToken);
+            if(parseRes.token){
+            localStorage.setItem("token",parseRes.token);
             setAuth(true);
             toast.success("Register Successfully");
         }
@@ -37,6 +39,10 @@ const Register = ({ setAuth }) => {
             console.error(err.message);
         }
     };
+    if (isAuthenticated) {
+        return <Navigate to="/dashboard" />;
+    }
+    
     return (
         <Fragment>
             <h1>Register</h1>
@@ -47,7 +53,7 @@ const Register = ({ setAuth }) => {
                 onChange={e => onChange(e)}/>
                 <input type="text" name="name" placeholder="name"  value={name}
                 onChange={e => onChange(e)}/>
-                <button>Register</button>   
+                <button type="submit">Register</button>   
             </form>
             <Link to="/login">Login</Link>
         </Fragment>

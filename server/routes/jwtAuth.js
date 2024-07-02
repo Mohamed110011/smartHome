@@ -5,7 +5,7 @@ const jwtGenerator = require("../utils/jwtGenerator");
 const validInfo = require("../middleware/validInfo");
 const authorization = require("../middleware/authorization");
 
-//authorizeentication
+//register route
 
 router.post("/register",validInfo, async (req, res) => {
 
@@ -19,21 +19,22 @@ router.post("/register",validInfo, async (req, res) => {
       return res.status(401).json("User already exist!");
     }
 
-
-    const salt = await bcrypt.genSalt(10);
+    const saltRound = 10;
+    const salt = await bcrypt.genSalt(saltRound);
     const bcryptPassword = await bcrypt.hash(password, salt);
 
 
 
-    let newUser = await pool.query(
+    const newUser = await pool.query(
       "INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *",
       [name, email, bcryptPassword]
     );
 
-    const jwtToken = jwtGenerator(newUser.rows[0].user_id);
-res.json({ jwtToken });
+    const token = jwtGenerator(newUser.rows[0].user_id);
+res.json({ token });
 
-    return res.json({ jwtToken });
+    //return res.json({ jwtToken });
+
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -62,14 +63,16 @@ router.post("/login",validInfo, async (req, res) => {
     if (!validPassword) {
       return res.status(401).json("Invalid Credential");
     }
-    const jwtToken = jwtGenerator(user.rows[0].user_id);
-    return res.json({ jwtToken });
+    const token = jwtGenerator(user.rows[0].user_id);
+    return res.json({ token });
+
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
   }
 });
 
+//verify route
 router.get("/is-verify", authorization, async (req, res) => {
   try {
     res.json(true);
