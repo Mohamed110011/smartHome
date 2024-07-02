@@ -4,9 +4,12 @@ import "./App.css";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
-import { toast } from "react-toastify";
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-//toast.configure();
+
+
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -60,6 +63,7 @@ function App() {
             />
           </Routes>
         </div>
+        <ToastContainer />
       </Router>
     </Fragment>
   );
