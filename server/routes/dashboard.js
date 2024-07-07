@@ -2,25 +2,39 @@ const router = require("express").Router();
 const pool = require("../db");
 const authorization = require("../middleware/authorization");
 
+// Function to get user and todos
 
+// Function to get user and todos
+const getUserAndTodos = async (userId) => {
+  const query = `
+    SELECT u.user_name, t.todo_id, t.description 
+    FROM users AS u 
+    LEFT JOIN todos AS t ON u.user_id = t.user_id 
+    WHERE u.user_id = $1
+  `;
+  const { rows } = await pool.query(query, [userId]);
+  return rows;
+};
+
+// Route handler
 router.get("/", authorization, async (req, res) => {   
-    try {
-        // const user = await pool.query(
-        //   "SELECT user_name FROM users WHERE user_id = $1",
-        //   [req.user.id]
-        // );
-    
-        const user = await pool.query(
-          "SELECT u.user_name, t.todo_id, t.description FROM users AS u LEFT JOIN todos AS t ON u.user_id = t.user_id WHERE u.user_id = $1",
-          [req.user.id]
-        );
-    
-        res.json(user.rows);
-      } catch (err) {
-        console.error(err.message);
-        res.status(500).send("Server error");
-      }
-    });
+  try {
+    const userId = req.user; // Directly use req.user
+    console.log("User ID from authorization middleware:", userId);
+
+    const userTodos = await getUserAndTodos(userId);
+    console.log("Query result:", userTodos);
+
+    if (userTodos.length === 0) {
+      console.log("No data found for user ID:", userId);
+    }
+
+    res.json(userTodos);
+  } catch (err) {
+    console.error("Error executing query:", err.message);
+    res.status(500).send("Server error");
+  }
+});
     
     // //create a todo
     
@@ -30,12 +44,13 @@ router.get("/", authorization, async (req, res) => {
         const { description } = req.body;
         const newTodo = await pool.query(
           "INSERT INTO todos (user_id, description) VALUES ($1, $2) RETURNING *",
-          [req.user.id, description]
+          [req.user, description] // Use req.user directly as it contains the user ID
         );
     
         res.json(newTodo.rows[0]);
       } catch (err) {
-        console.error(err.message);
+        console.error("Error executing query:", err.message);
+        res.status(500).send("Server error");
       }
     });
     
@@ -47,7 +62,7 @@ router.get("/", authorization, async (req, res) => {
         const { description } = req.body;
         const updateTodo = await pool.query(
           "UPDATE todos SET description = $1 WHERE todo_id = $2 AND user_id = $3 RETURNING *",
-          [description, id, req.user.id]
+          [description, id, req.user]
         );
     
         if (updateTodo.rows.length === 0) {
@@ -67,7 +82,7 @@ router.get("/", authorization, async (req, res) => {
         const { id } = req.params;
         const deleteTodo = await pool.query(
           "DELETE FROM todos WHERE todo_id = $1 AND user_id = $2 RETURNING *",
-          [id, req.user.id]
+          [id, req.user]
         );
     
         if (deleteTodo.rows.length === 0) {
