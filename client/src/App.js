@@ -4,6 +4,7 @@ import "./App.css";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/dashboard/Dashboard";
+import Landing from "./components/Landing";
 import { ToastContainer,toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -49,6 +50,10 @@ function App() {
       <Router>
         <div className="container">
           <Routes>
+          <Route
+              path="/"
+              element={!isAuthenticated ? <Landing  /> : <Navigate to="/dashboard" />}
+            />
             <Route
               path="/login"
               element={!isAuthenticated ? <Login setAuth={setAuth} /> : <Navigate to="/dashboard" />}
