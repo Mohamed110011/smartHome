@@ -9,7 +9,7 @@ const InputTodo = ({ setTodosChange }) => {
       const myHeaders = new Headers();
 
       myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("jwt_token", localStorage.token);
+      myHeaders.append("token", localStorage.token);
 
       const body = { description };
       const response = await fetch("http://localhost:5000/dashboard/todos", {

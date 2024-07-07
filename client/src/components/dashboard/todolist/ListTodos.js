@@ -11,7 +11,7 @@ const ListTodos = ({ allTodos, setTodosChange }) => {
     try {
       await fetch(`http://localhost:5000/dashboard/todos/${id}`, {
         method: "DELETE",
-        headers: { jwt_token: localStorage.token }
+        headers: { token: localStorage.token }
       });
 
       setTodos(todos.filter(todo => todo.todo_id !== id));
