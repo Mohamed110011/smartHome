@@ -12,18 +12,24 @@ router.get("/users", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-// Function to delete a user
+// Route DELETE pour supprimer un utilisateur et ses maisons associées
 router.delete("/users/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedUser = await User.findByIdAndDelete(id);
-    if (!deletedUser) {
+    
+    // Vérifiez que l'utilisateur existe
+    const userResult = await pool.query("SELECT * FROM users WHERE user_id = $1", [id]);
+    if (userResult.rows.length === 0) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json({ message: "User deleted successfully" });
+
+    // Supprimez l'utilisateur (cela supprimera aussi les maisons associées grâce à ON DELETE CASCADE)
+    await pool.query("DELETE FROM users WHERE user_id = $1", [id]);
+    
+    res.status(200).json({ message: "User and associated houses deleted successfully" });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: "Server error" });
+    console.error("Error deleting user:", error.message);
+    res.status(500).json({ message: "Failed to delete user and associated houses" });
   }
 });
 // Fonction pour modifier un utilisateur

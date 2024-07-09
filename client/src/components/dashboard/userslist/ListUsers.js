@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const ListUsers = ({ allUsers, setUsersChange }) => {
   const [users, setUsers] = useState([]);
@@ -14,17 +15,22 @@ const ListUsers = ({ allUsers, setUsersChange }) => {
 
       if (response.ok) {
         // Update local state after successful deletion
-        setUsers(users.filter(user => user.user_id !== id));
+        const updatedUsers = users.filter(user => user.user_id !== id);
+        setUsers(updatedUsers);
+
         // Optionally, notify parent component of user change
         if (setUsersChange) {
-          setUsersChange(users.filter(user => user.user_id !== id));
+          setUsersChange(updatedUsers);
         }
+
+        toast.success("User deleted successfully");
       } else {
-        throw new Error("Failed to delete user");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to delete user");
       }
     } catch (err) {
       console.error(err.message);
-      // Handle error (e.g., show error message)
+      toast.error("Failed to delete user");
     }
   }
 

@@ -163,7 +163,7 @@ const App = () => {
           <Route
             exact
             path="/register"
-            element={<Register />}
+            element={<Register setAuth={setAuth}/>}
           />
         
         <Route
