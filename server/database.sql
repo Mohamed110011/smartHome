@@ -78,6 +78,8 @@ CREATE TABLE users(
     maison_id SERIAL,
     name VARCHAR(255) NOT NULL,
     type VARCHAR(255) NOT NULL,
+    status BOOLEAN NOT NULL,
+    
     PRIMARY KEY (device_id),
     FOREIGN KEY (maison_id) REFERENCES maison(maison_id)
   );

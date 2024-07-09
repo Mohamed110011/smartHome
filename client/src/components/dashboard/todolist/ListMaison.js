@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { Link } from "react-router-dom"; // Import the Link component
 import EditMaison from "./EditMaison";
 
 const ListMaisons = ({ allMaisons, setMaisonsChange }) => {
@@ -31,6 +32,7 @@ const ListMaisons = ({ allMaisons, setMaisonsChange }) => {
             <th>Address</th>
             <th>Edit</th>
             <th>Delete</th>
+            <th>View</th> {/* Add View column */}
           </tr>
         </thead>
         <tbody>
@@ -50,6 +52,11 @@ const ListMaisons = ({ allMaisons, setMaisonsChange }) => {
                   >
                     Delete
                   </button>
+                </td>
+                <td>
+                  <Link to={`/maisons/${maison.maison_id}`} className="btn btn-primary">
+                    View
+                  </Link>
                 </td>
               </tr>
             ))}

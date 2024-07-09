@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import "./App.css";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Dashboard from "./components/dashboard/Dashboard";
-import Landing from "./components/Landing";
+import Dashboard from "./components/dashboard/Dashboard-user";
+import Landing from "./Landing";
 import { ToastContainer,toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
