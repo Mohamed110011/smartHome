@@ -2,6 +2,43 @@ const router = require("express").Router();
 const pool = require("../db");
 const authorization = require("../middleware/authorization");
 
+// Get all Users sauf name="admin"
+router.get("/users", async (req, res) => {
+  try {
+    const allUsers = await pool.query("SELECT * FROM users WHERE user_name != 'admin'");
+    res.json(allUsers.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+// supprimer un utilisateur
+router.delete("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteUser = await pool.query("DELETE FROM users WHERE user_id = $1", [id]);
+
+    res.json("User was deleted");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+// Fonction pour modifier un utilisateur
+router.put("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+    const updateUser = await pool.query("UPDATE users SET user_name = $1 WHERE user_id = $2", [name, id]);
+
+    res.json("User was updated");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
 // Function to get user and maisons
 const getUserAndMaisons = async (userId) => {
   const query = `

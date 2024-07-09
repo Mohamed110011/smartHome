@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom"; // Importer useNavigate
+import { useNavigate } from "react-router-dom";
+import ListUsers from "./userslist/ListUsers";
+import EditUsers from "./userslist/EditUsers";
 
 const DashboardAdmin = ({ setAuth }) => {
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
-  const navigate = useNavigate(); // Utiliser useNavigate pour obtenir la fonction de navigation
+  const navigate = useNavigate();
 
   const getAdminData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/admin/", {
+      const res = await fetch("http://localhost:5000/dashboard/users", {
         method: "GET",
         headers: { token: localStorage.token }
       });
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch user data");
+      }
 
       const parseData = await res.json();
       setUsers(parseData);
       setName("Admin");
     } catch (err) {
       console.error(err.message);
+      toast.error("Failed to fetch user data");
     }
   };
 
@@ -28,9 +35,10 @@ const DashboardAdmin = ({ setAuth }) => {
       localStorage.removeItem("token");
       setAuth(false);
       toast.success("Logout successfully");
-      navigate("/login"); // Utiliser navigate pour rediriger vers /login après la déconnexion
+      navigate("/login");
     } catch (err) {
       console.error(err.message);
+      toast.error("Logout failed");
     }
   };
 
@@ -52,6 +60,8 @@ const DashboardAdmin = ({ setAuth }) => {
           <li key={user.user_id}>{user.user_name}</li>
         ))}
       </ul>
+      <ListUsers allUsers={users} setUsersChange={setUsers} />
+      <EditUsers />
     </div>
   );
 };
