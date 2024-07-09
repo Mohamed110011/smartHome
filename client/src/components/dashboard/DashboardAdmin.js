@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ListUsers from "./userslist/ListUsers";
-import EditUsers from "./userslist/EditUsers";
 
 const DashboardAdmin = ({ setAuth }) => {
   const [name, setName] = useState("");
@@ -61,7 +60,6 @@ const DashboardAdmin = ({ setAuth }) => {
         ))}
       </ul>
       <ListUsers allUsers={users} setUsersChange={setUsers} />
-      <EditUsers />
     </div>
   );
 };
