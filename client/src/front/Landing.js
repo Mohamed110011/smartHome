@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import parse from 'html-react-parser';
 import './style.css';
-import './assets/header.jpg';
+import headerImage from './assets/header.jpg';
+import plan1Image from './assets/plan-1.jpg';
+import plan2Image from './assets/plan-2.jpg';
+import plan3Image from './assets/plan-3.jpg';
+import lounge1Image from './assets/lounge-1.jpg';
+import lounge2Image from './assets/lounge-2.jpg';
+import traveller1 from './assets/traveller-1.jpg';
+import traveller2 from './assets/traveller-2.jpg';
+import traveller3 from './assets/traveller-3.jpg';
+import traveller4 from './assets/traveller-4.jpg';
+import client1 from './assets/client-1.jpg';
+import client2 from './assets/client-2.jpg';
+import client3 from './assets/client-3.jpg';
+import client4 from './assets/client-4.jpg';
 
 
 
@@ -31,11 +44,10 @@ const htmlContent = `
         <li class="link"><a href="#">Seats</a></li>
         <li class="link"><a href="#">Destinations</a></li>
       </ul>
-      <button class="btn">Contact</button>
-    </nav>
+<button class="btn" onclick="window.location.href='http://localhost:3000/login'">Login</button>    </nav>
     <header class="section__container header__container">
       <h1 class="section__header">Find And Book<br />A Great Experience</h1>
-      <img src={require('./assets/header.jpg').default} alt="header" />
+      <img src="${headerImage}" alt="header" />
     </header>
 
     <section class="section__container booking__container">
@@ -120,9 +132,9 @@ const htmlContent = `
           </p>
         </div>
         <div class="plan__image">
-          <img src="assets/plan-1.jpg" alt="plan" />
-          <img src="assets/plan-2.jpg" alt="plan" />
-          <img src="assets/plan-3.jpg" alt="plan" />
+          <img  src="${plan1Image}" alt="plan" />
+          <img  src="${plan2Image}" alt="plan" />
+          <img  src="${plan3Image}" alt="plan" />
         </div>
       </div>
     </section>
@@ -166,8 +178,8 @@ const htmlContent = `
 
     <section class="section__container lounge__container">
       <div class="lounge__image">
-        <img src="assets/lounge-1.jpg" alt="lounge" />
-        <img src="assets/lounge-2.jpg" alt="lounge" />
+        <img  src="${lounge1Image}" alt="lounge" />
+        <img  src="${lounge2Image}" alt="lounge" />
       </div>
       <div class="lounge__content">
         <h2 class="section__header">Unaccompanied Minor Lounge</h2>
@@ -208,33 +220,33 @@ const htmlContent = `
       <h2 class="section__header">Best travellers of the month</h2>
       <div class="travellers__grid">
         <div class="travellers__card">
-          <img src="assets/traveller-1.jpg" alt="traveller" />
+          <img src="${traveller1}" alt="traveller" />
           <div class="travellers__card__content">
-            <img src="assets/client-1.jpg" alt="client" />
+            <img src="${client1}" alt="client" />
             <h4>Emily Johnson</h4>
             <p>Dubai</p>
           </div>
         </div>
         <div class="travellers__card">
-          <img src="assets/traveller-2.jpg" alt="traveller" />
+          <img  src="${traveller2}" alt="traveller" />
           <div class="travellers__card__content">
-            <img src="assets/client-2.jpg" alt="client" />
+            <img src="${client2}" alt="client" />
             <h4>David Smith</h4>
             <p>Paris</p>
           </div>
         </div>
         <div class="travellers__card">
-          <img src="assets/traveller-3.jpg" alt="traveller" />
+          <img src="${traveller3}" alt="traveller" />
           <div class="travellers__card__content">
-            <img src="assets/client-3.jpg" alt="client" />
+            <img src="${client3}" alt="client" />
             <h4>Olivia Brown</h4>
             <p>Singapore</p>
           </div>
         </div>
         <div class="travellers__card">
-          <img src="assets/traveller-4.jpg" alt="traveller" />
+          <img src="${traveller4}" alt="traveller" />
           <div class="travellers__card__content">
-            <img src="assets/client-4.jpg" alt="client" />
+            <img src="${client4}" alt="client" />
             <h4>Daniel Taylor</h4>
             <p>Malaysia</p>
           </div>
@@ -303,10 +315,11 @@ const Landing = () => {
         setContent(htmlContent);
     }, []);
 
+    
+
     return (
         <div>
-            {parse(content)}
-        </div>
+<div dangerouslySetInnerHTML={{ __html: htmlContent }} />        </div>
     );
 };
 
