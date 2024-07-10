@@ -133,7 +133,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import DashboardAdmin from "./components/dashboard/DashboardAdmin";
 import DashboardUser from "./components/dashboard/DashboardUser";
-import Landing from "./Landing";
+import Landing from "./front/Landing";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
