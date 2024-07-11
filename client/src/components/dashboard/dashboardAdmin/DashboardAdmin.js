@@ -3,6 +3,9 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ListUsers from "../userslist/ListUsers";
 import './style.css';
+import headerImage from './img/1.png';
+
+
 
 
 const DashboardAdmin = ({ setAuth }) => {
@@ -67,15 +70,17 @@ const DashboardAdmin = ({ setAuth }) => {
         
         <div class="side-content">
             <div class="profile">
-                <div class="profile-img bg-img" style="background-image: url(img/3.jpeg)"></div>
-                <h4>David Green</h4>
+               
+<img  class="profile-img bg-img" src="${headerImage}" alt="Client Image">
+
+                <h4>${name}</h4>
                 <small>Art Director</small>
             </div>
 
             <div class="side-menu">
                 <ul>
                     <li>
-                       <a href="" class="active">
+                       <a onclick="window.location.href='http://localhost:3000/dashboard-admin'" class="active">
                             <span class="las la-home"></span>
                             <small>Dashboard</small>
                         </a>
@@ -280,8 +285,8 @@ const DashboardAdmin = ({ setAuth }) => {
                                     <td>#5033</td>
                                     <td>
                                         <div class="client">
-                                           <div class="client-img bg-img" style="background-image: url(img/1.jpeg)"></div>
-                                            <div class="client-info">
+<img  src="${headerImage}" alt="Client Image">
+>                                            <div class="client-info">
                                                 <h4>Exty Bruno</h4>
                                                 <small>exty@crossover.org</small>
                                             </div>
