@@ -131,7 +131,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import DashboardAdmin from "./components/dashboard/DashboardAdmin";
+import DashboardAdmin from "./components/dashboard/dashboardAdmin/DashboardAdmin";
 import DashboardUser from "./components/dashboard/DashboardUser";
 import Landing from "./front/Landing";
 const App = () => {
