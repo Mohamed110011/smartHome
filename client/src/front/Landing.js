@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import parse from 'html-react-parser';
-import './style.css';
+import './styleLanding.css';
 import headerImage from './assets/header.jpg';
 import plan1Image from './assets/plan-1.jpg';
 import plan2Image from './assets/plan-2.jpg';
@@ -31,7 +31,7 @@ const htmlContent = `
       href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styleLanding.css" />
     <title>Web Design Mastery | Flivan</title>
   </head>
   <body>
