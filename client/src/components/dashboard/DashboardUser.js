@@ -3,8 +3,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 // components
-import InputMaison from "./todolist/InputMaison";
-import ListMaisons from "./todolist/ListMaison";
+import InputMaison from "./maisonlist/InputMaison";
+import ListMaisons from "./maisonlist/ListMaison";
 
 const DashboardUser = ({ setAuth }) => {
   const [name, setName] = useState("");

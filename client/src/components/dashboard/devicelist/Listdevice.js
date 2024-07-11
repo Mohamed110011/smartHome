@@ -1,69 +1,72 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom"; // Import the Link component
-import EditMaison from "./Editdevice";
+import EditDevices from "./Editdevice";
 
-const ListMaisons = ({ allMaisons, setMaisonsChange }) => {
-  const [maisons, setMaisons] = useState([]);
+const Listdevice = ({ allDevices, setDevicesChange }) => {
+  const [devices, setDevices] = useState([]);
 
-  // delete maison function
-  async function deleteMaison(id) {
+  // delete device function
+  const deleteDevice = async (id) => {
     try {
-      await fetch(`http://localhost:5000/dashboard/maisons/${id}`, {
+      await fetch(`http://localhost:5000/dashboard/devices/${id}`, {
         method: "DELETE",
         headers: { token: localStorage.token }
       });
 
-      setMaisons(maisons.filter(maison => maison.maison_id !== id));
+      setDevices(devices.filter(device => device.device_id !== id));
     } catch (err) {
       console.error(err.message);
     }
-  }
+  };
+
+
+
+ 
 
   useEffect(() => {
-    setMaisons(allMaisons);
-  }, [allMaisons]);
+    setDevices(allDevices);
+  }, [allDevices]);
 
   return (
     <Fragment>
-      <table className="table mt-5">
+      <table className="table mt-5 text-center">
         <thead>
           <tr>
-            <th>Description</th>
-            <th>Address</th>
+            <th>Device ID</th>
+            <th>Device Name</th>
+            <th>Device Type</th>
+            <th>Device Status</th>
             <th>Edit</th>
             <th>Delete</th>
-            <th>View</th> {/* Add View column */}
           </tr>
         </thead>
         <tbody>
-          {maisons.length !== 0 &&
-            maisons[0].maison_id !== null &&
-            maisons.map(maison => (
-              <tr key={maison.maison_id}>
-                <td>{maison.description}</td>
-                <td>{maison.address}</td>
+          {devices.length !== 0 &&
+            devices[0].device_id !== null &&
+            devices.map((device) => (
+              <tr key={device.device_id}>
+                <td>{device.device_id}</td>
+                <td>{device.device_name}</td>
+                <td>{device.device_type}</td>
+                <td>{device.device_status}</td>
                 <td>
-                  <EditMaison maison={maison} setMaisonsChange={setMaisonsChange} />
+                  <EditDevices device={device} setDevicesChange={setDevicesChange} />
                 </td>
                 <td>
                   <button
                     className="btn btn-danger"
-                    onClick={() => deleteMaison(maison.maison_id)}
+                    onClick={() => deleteDevice(device.device_id)}
                   >
                     Delete
                   </button>
-                </td>
-                <td>
-                  <Link to={`/maisons/${maison.maison_id}`} className="btn btn-primary">
-                    View
-                  </Link>
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
     </Fragment>
+    
   );
 };
 
-export default ListMaisons;
+export default Listdevice;

@@ -135,4 +135,78 @@ router.delete("/maisons/:id", authorization, async (req, res) => {
   }
 });
 
+// CREATE A DEVICE 
+
+// CREATE TABLE devices(
+//   device_id SERIAL,
+//   maison_id Int,
+//   name VARCHAR(255) NOT NULL,
+//   type VARCHAR(255) NOT NULL,
+//   status BOOLEAN NOT NULL,
+//   values VARCHAR(255) ,
+//   mode VARCHAR(255) ,
+//   PRIMARY KEY (device_id),
+//   FOREIGN KEY (maison_id) REFERENCES maisons(maison_id) ON DELETE CASCADE
+// );
+// CREATE A DEVICE 
+
+
+router.post("/devices/:maison_id", authorization, async (req, res) => {
+  try {
+    const { maison_id } = req.params;
+    const { name, type, status, values, mode } = req.body;
+    const newDevice = await pool.query(
+      "INSERT INTO devices (maison_id, name, type, status, values, mode) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      [maison_id, name, type, status, values, mode]
+    );
+
+    res.json(newDevice.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+// UPDATE A DEVICE
+router.put("/devices/:id", authorization, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, type, status, values, mode } = req.body;
+    const updateDevice = await pool.query(
+      "UPDATE devices SET name = $1, type = $2, status = $3, values = $4, mode = $5 WHERE device_id = $6 RETURNING *",
+      [name, type, status, values, mode, id]
+    );
+
+    if (updateDevice.rows.length === 0) {
+      return res.json("This device does not exist");
+    }
+
+    res.json("Device was updated");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+// DELETE A DEVICE
+router.delete("/devices/:id", authorization, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteDevice = await pool.query(
+      "DELETE FROM devices WHERE device_id = $1 RETURNING *",
+      [id]
+    );
+
+    if (deleteDevice.rows.length === 0) {
+      return res.json("This device does not exist");
+    }
+
+    res.json("Device was deleted");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+
 module.exports = router;

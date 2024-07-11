@@ -68,20 +68,21 @@ CREATE TABLE users(
    description VARCHAR(255) NOT NULL,
    address VARCHAR(255) NOT NULL,
    PRIMARY KEY (maison_id),
-   FOREIGN KEY (user_id) REFERENCES users(user_id)
+   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
  );
 
 
 --devices
   CREATE TABLE devices(
     device_id SERIAL,
-    maison_id SERIAL,
+    maison_id Int,
     name VARCHAR(255) NOT NULL,
     type VARCHAR(255) NOT NULL,
     status BOOLEAN NOT NULL,
-    
+    values VARCHAR(255) ,
+    mode VARCHAR(255) ,
     PRIMARY KEY (device_id),
-    FOREIGN KEY (maison_id) REFERENCES maison(maison_id)
+    FOREIGN KEY (maison_id) REFERENCES maisons(maison_id) ON DELETE CASCADE
   );
 
 --fake users data

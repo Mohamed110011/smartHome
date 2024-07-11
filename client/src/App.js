@@ -134,8 +134,10 @@ import Register from "./components/Register";
 import DashboardAdmin from "./components/dashboard/dashboardAdmin/DashboardAdmin";
 import DashboardUser from "./components/dashboard/DashboardUser";
 import Landing from "./front/Landing";
+import Inputdevice from "./components/dashboard/devicelist/Inputdevice";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
@@ -171,6 +173,12 @@ const App = () => {
             path="/landing"
             element={<Landing />}
           />
+         <Route
+  exact
+  path={`/devices/:maison_id`}
+  element={<Inputdevice setAuth={setAuth} />}
+/>
+
         </Routes>
       </div>
     </Router>
