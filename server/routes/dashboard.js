@@ -207,6 +207,17 @@ router.delete("/devices/:id", authorization, async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+// Get all devices for a maison
+router.get("/devices/:maison_id", authorization, async (req, res) => {
+  try {
+    const { maison_id } = req.params;
+    const allDevices = await pool.query("SELECT * FROM devices WHERE maison_id = $1", [maison_id]);
+    res.json(allDevices.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
 
 
 module.exports = router;

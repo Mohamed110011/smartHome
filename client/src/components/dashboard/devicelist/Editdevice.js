@@ -1,26 +1,22 @@
 import React, { Fragment, useState } from "react";
 
-const EditMaison = ({ maison, setMaisonsChange }) => {
-  const [description, setDescription] = useState(maison.description);
-  const [address, setAddress] = useState(maison.address);
+const Editdevice = ({ device, setDevicesChange }) => {
+  const [device_name, setDeviceName] = useState(device.device_name);
+  const [device_type, setDeviceType] = useState(device.device_type);
+  const [device_status, setDeviceStatus] = useState(device.device_status);
 
-  // Function to handle the edit operation
-  const editText = async (id) => {
+  // edit device function
+  const updateDevice = async (e) => {
+    e.preventDefault();
     try {
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("token", localStorage.token);
-
-      const body = { description, address }; // Use current state of description and address
-
-      await fetch(`http://localhost:5000/dashboard/maisons/${id}`, {
+      const body = { device_name, device_type, device_status };
+      await fetch(`http://localhost:5000/dashboard/devices/${device.device_id}`, {
         method: "PUT",
-        headers: myHeaders,
-        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json", token: localStorage.token },
+        body: JSON.stringify(body)
       });
 
-      setMaisonsChange(true); // Trigger reload of maisons after edit
-
+      setDevicesChange(true);
     } catch (err) {
       console.error(err.message);
     }
@@ -28,29 +24,37 @@ const EditMaison = ({ maison, setMaisonsChange }) => {
 
   return (
     <Fragment>
-      {/* Button to trigger modal */}
       <button
         type="button"
         className="btn btn-warning"
         data-toggle="modal"
-        data-target={`#id${maison.maison_id}`}
+        data-target={`#id${device.device_id}`}
       >
         Edit
       </button>
 
-      {/* Modal for editing */}
-      <div className="modal" id={`id${maison.maison_id}`}>
+      <div
+        className="modal"
+        id={`id${device.device_id}`}
+        onClick={() => {
+          setDeviceName(device.device_name);
+          setDeviceType(device.device_type);
+          setDeviceStatus(device.device_status);
+        }}
+      >
         <div className="modal-dialog">
           <div className="modal-content">
+
             <div className="modal-header">
-              <h4 className="modal-title">Edit Maison</h4>
+              <h4 className="modal-title">Edit Device</h4>
               <button
                 type="button"
                 className="close"
                 data-dismiss="modal"
                 onClick={() => {
-                  setDescription(maison.description);
-                  setAddress(maison.address);
+                  setDeviceName(device.device_name);
+                  setDeviceType(device.device_type);
+                  setDeviceStatus(device.device_status);
                 }}
               >
                 &times;
@@ -58,34 +62,32 @@ const EditMaison = ({ maison, setMaisonsChange }) => {
             </div>
 
             <div className="modal-body">
-              <div className="form-group">
-                <label htmlFor="editDescription">Description</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="editDescription"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="editAddress">Address</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="editAddress"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                />
-              </div>
+              <input
+                type="text"
+                className="form-control"
+                value={device_name}
+                onChange={(e) => setDeviceName(e.target.value)}
+              />
+              <input
+                type="text"
+                className="form-control"
+                value={device_type}
+                onChange={(e) => setDeviceType(e.target.value)}
+              />
+              <input
+                type="text"
+                className="form-control"
+                value={device_status}
+                onChange={(e) => setDeviceStatus(e.target.value)}
+              />
             </div>
 
             <div className="modal-footer">
               <button
                 type="button"
                 className="btn btn-warning"
-                onClick={() => editText(maison.maison_id)} // Call edit function
                 data-dismiss="modal"
+                onClick={(e) => updateDevice(e)}
               >
                 Edit
               </button>
@@ -94,13 +96,15 @@ const EditMaison = ({ maison, setMaisonsChange }) => {
                 className="btn btn-danger"
                 data-dismiss="modal"
                 onClick={() => {
-                  setDescription(maison.description);
-                  setAddress(maison.address);
+                  setDeviceName(device.device_name);
+                  setDeviceType(device.device_type);
+                  setDeviceStatus(device.device_status);
                 }}
               >
                 Close
               </button>
             </div>
+
           </div>
         </div>
       </div>
@@ -108,4 +112,4 @@ const EditMaison = ({ maison, setMaisonsChange }) => {
   );
 };
 
-export default EditMaison;
+export default Editdevice;

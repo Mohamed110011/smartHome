@@ -1,11 +1,26 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Import the Link component
-import EditDevices from "./Editdevice";
+import { useParams, Link } from "react-router-dom";
+import Editdevice from "./Editdevice";
 
-const Listdevice = ({ allDevices, setDevicesChange }) => {
+const Listdevice = () => {
+  const { maison_id } = useParams(); // Get maison_id from URL parameters
   const [devices, setDevices] = useState([]);
 
-  // delete device function
+  // Fetch device data
+  const fetchDevices = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/dashboard/devices/${maison_id}`, {
+        headers: { token: localStorage.token }
+      });
+      const data = await response.json();
+      setDevices(data);
+      console.log("Fetched devices:", data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  // Delete device function
   const deleteDevice = async (id) => {
     try {
       await fetch(`http://localhost:5000/dashboard/devices/${id}`, {
@@ -19,38 +34,34 @@ const Listdevice = ({ allDevices, setDevicesChange }) => {
     }
   };
 
-
-
- 
-
   useEffect(() => {
-    setDevices(allDevices);
-  }, [allDevices]);
+    fetchDevices();
+  }, [maison_id]);
 
   return (
     <Fragment>
+      <h1>Devices</h1>
       <table className="table mt-5 text-center">
         <thead>
           <tr>
-            <th>Device ID</th>
             <th>Device Name</th>
             <th>Device Type</th>
             <th>Device Status</th>
+            <th>Device Value</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
         </thead>
         <tbody>
-          {devices.length !== 0 &&
-            devices[0].device_id !== null &&
+          {devices && devices.length > 0 ? (
             devices.map((device) => (
               <tr key={device.device_id}>
-                <td>{device.device_id}</td>
-                <td>{device.device_name}</td>
-                <td>{device.device_type}</td>
-                <td>{device.device_status}</td>
+                <td>{device.name}</td>
+                <td>{device.type}</td>
+                <td>{device.status ? "Active" : "Inactive"}</td>
+                <td>{device.values}</td>
                 <td>
-                  <EditDevices device={device} setDevicesChange={setDevicesChange} />
+                  <Editdevice device={device} setDevicesChange={fetchDevices} />
                 </td>
                 <td>
                   <button
@@ -61,11 +72,15 @@ const Listdevice = ({ allDevices, setDevicesChange }) => {
                   </button>
                 </td>
               </tr>
-            ))}
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6">No devices found</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </Fragment>
-    
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { useParams } from "react-router-dom"; 
+import Listdevice from "./Listdevice";
 
 
 const InputDeviceList = ({ setDevicesChange }) => {
@@ -76,6 +77,7 @@ const InputDeviceList = ({ setDevicesChange }) => {
         <button className="btn btn-success
         mt-2">Add</button>
       </form>
+      <Listdevice/>
     </Fragment>
   );
 }
