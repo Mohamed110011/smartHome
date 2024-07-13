@@ -132,7 +132,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import DashboardAdmin from "./components/dashboard/dashboardAdmin/DashboardAdmin";
-import DashboardUser from "./components/dashboard/DashboardUser";
+import DashboardUser from "./components/dashboard/dashbordUser/DashboardUser";
 import Landing from "./front/Landing";
 import Inputdevice from "./components/dashboard/devicelist/Inputdevice";
 const App = () => {

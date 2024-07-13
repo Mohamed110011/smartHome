@@ -1,22 +1,51 @@
 import React, { Fragment, useState } from "react";
 
-const Editdevice = ({ device, setDevicesChange }) => {
-  const [device_name, setDeviceName] = useState(device.device_name);
-  const [device_type, setDeviceType] = useState(device.device_type);
-  const [device_status, setDeviceStatus] = useState(device.device_status);
+
+
+// router.put("/devices/:id", authorization, async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { name, type, status, values, mode } = req.body;
+//     const updateDevice = await pool.query(
+//       "UPDATE devices SET name = $1, type = $2, status = $3, values = $4, mode = $5 WHERE device_id = $6 RETURNING *",
+//       [name, type, status, values, mode, id]
+//     );
+
+//     if (updateDevice.rows.length === 0) {
+//       return res.json("This device does not exist");
+//     }
+
+//     res.json("Device was updated");
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("Server error");
+//   }
+// });
+
+
+
+
+
+const Editdevice = ({ device }) => {
+  const [name, setName] = useState(device.name);
+  const [type, setType] = useState(device.type);
+  const [status, setStatus] = useState(device.status);
+  const [values, setValues] = useState(device.values);
+  const [mode, setMode] = useState(device.mode);
 
   // edit device function
   const updateDevice = async (e) => {
     e.preventDefault();
     try {
-      const body = { device_name, device_type, device_status };
-      await fetch(`http://localhost:5000/dashboard/devices/${device.device_id}`, {
+      const body = { name, type, status, values, mode };
+      const response = await fetch(`http://localhost:5000/dashboard/devices/${device.device_id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", token: localStorage.token },
         body: JSON.stringify(body)
       });
 
-      setDevicesChange(true);
+      console.log("Response:", response);
+      window.location = `/devices/${device.maison_id}`;
     } catch (err) {
       console.error(err.message);
     }
@@ -37,9 +66,11 @@ const Editdevice = ({ device, setDevicesChange }) => {
         className="modal"
         id={`id${device.device_id}`}
         onClick={() => {
-          setDeviceName(device.device_name);
-          setDeviceType(device.device_type);
-          setDeviceStatus(device.device_status);
+          setName(device.name);
+          setType(device.type);
+          setStatus(device.status);
+          setValues(device.values);
+          setMode(device.mode);
         }}
       >
         <div className="modal-dialog">
@@ -52,9 +83,11 @@ const Editdevice = ({ device, setDevicesChange }) => {
                 className="close"
                 data-dismiss="modal"
                 onClick={() => {
-                  setDeviceName(device.device_name);
-                  setDeviceType(device.device_type);
-                  setDeviceStatus(device.device_status);
+                  setName(device.name);
+                  setType(device.type);
+                  setStatus(device.status);
+                  setValues(device.values);
+                  setMode(device.mode);
                 }}
               >
                 &times;
@@ -64,21 +97,33 @@ const Editdevice = ({ device, setDevicesChange }) => {
             <div className="modal-body">
               <input
                 type="text"
-                className="form-control"
-                value={device_name}
-                onChange={(e) => setDeviceName(e.target.value)}
+                className="form-control my-2"
+                value={name}
+                onChange={e => setName(e.target.value)}
               />
               <input
                 type="text"
-                className="form-control"
-                value={device_type}
-                onChange={(e) => setDeviceType(e.target.value)}
+                className="form-control my-2"
+                value={type}
+                onChange={e => setType(e.target.value)}
               />
               <input
                 type="text"
-                className="form-control"
-                value={device_status}
-                onChange={(e) => setDeviceStatus(e.target.value)}
+                className="form-control my-2"
+                value={status}
+                onChange={e => setStatus(e.target.value)}
+              />
+              <input
+                type="text"
+                className="form-control my-2"
+                value={values}
+                onChange={e => setValues(e.target.value)}
+              />
+              <input
+                type="text"
+                className="form-control my-2"
+                value={mode}
+                onChange={e => setMode(e.target.value)}
               />
             </div>
 
@@ -87,7 +132,7 @@ const Editdevice = ({ device, setDevicesChange }) => {
                 type="button"
                 className="btn btn-warning"
                 data-dismiss="modal"
-                onClick={(e) => updateDevice(e)}
+                onClick={e => updateDevice(e)}
               >
                 Edit
               </button>
@@ -96,9 +141,11 @@ const Editdevice = ({ device, setDevicesChange }) => {
                 className="btn btn-danger"
                 data-dismiss="modal"
                 onClick={() => {
-                  setDeviceName(device.device_name);
-                  setDeviceType(device.device_type);
-                  setDeviceStatus(device.device_status);
+                  setName(device.name);
+                  setType(device.type);
+                  setStatus(device.status);
+                  setValues(device.values);
+                  setMode(device.mode);
                 }}
               >
                 Close
@@ -110,6 +157,6 @@ const Editdevice = ({ device, setDevicesChange }) => {
       </div>
     </Fragment>
   );
-};
+}
 
 export default Editdevice;

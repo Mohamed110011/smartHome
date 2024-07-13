@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import parse from 'html-react-parser';
 import './styleLanding.css';
 import headerImage from './assets/header.jpg';
 import plan1Image from './assets/plan-1.jpg';

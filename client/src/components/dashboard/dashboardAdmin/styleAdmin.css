@@ -166,7 +166,7 @@
     transition: margin-left 300ms;
 }
 
-header {
+.header {
     position: fixed;
     right: 0;
     top: 0;
@@ -245,9 +245,9 @@ header {
     font-size: .8rem;
 }
 
-main {
+/* main {
     margin-top: 60px;
-}
+} */
 
 .page-header {
     padding: 1.3rem 1rem;

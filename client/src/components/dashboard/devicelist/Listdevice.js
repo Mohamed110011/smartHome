@@ -1,26 +1,10 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { Fragment } from "react";
+import { useParams } from "react-router-dom";
 import Editdevice from "./Editdevice";
 
-const Listdevice = () => {
-  const { maison_id } = useParams(); // Get maison_id from URL parameters
-  const [devices, setDevices] = useState([]);
+const Listdevice = ({ devices, fetchDevices }) => {
+  const { maison_id } = useParams();
 
-  // Fetch device data
-  const fetchDevices = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/dashboard/devices/${maison_id}`, {
-        headers: { token: localStorage.token }
-      });
-      const data = await response.json();
-      setDevices(data);
-      console.log("Fetched devices:", data);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
-  // Delete device function
   const deleteDevice = async (id) => {
     try {
       await fetch(`http://localhost:5000/dashboard/devices/${id}`, {
@@ -28,15 +12,11 @@ const Listdevice = () => {
         headers: { token: localStorage.token }
       });
 
-      setDevices(devices.filter(device => device.device_id !== id));
+      fetchDevices();
     } catch (err) {
       console.error(err.message);
     }
   };
-
-  useEffect(() => {
-    fetchDevices();
-  }, [maison_id]);
 
   return (
     <Fragment>
@@ -48,6 +28,7 @@ const Listdevice = () => {
             <th>Device Type</th>
             <th>Device Status</th>
             <th>Device Value</th>
+            <th>Device mode</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
@@ -60,6 +41,7 @@ const Listdevice = () => {
                 <td>{device.type}</td>
                 <td>{device.status ? "Active" : "Inactive"}</td>
                 <td>{device.values}</td>
+                <td>{device.mode}</td>
                 <td>
                   <Editdevice device={device} setDevicesChange={fetchDevices} />
                 </td>
@@ -75,7 +57,7 @@ const Listdevice = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="6">No devices found</td>
+              <td colSpan="7">No devices found</td>
             </tr>
           )}
         </tbody>

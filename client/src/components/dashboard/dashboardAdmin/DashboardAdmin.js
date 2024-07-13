@@ -123,7 +123,7 @@ const DashboardAdmin = ({ setAuth }) => {
     
     <div class="main-content">
         
-        <header>
+        <header class="header">
             <div class="header-content">
                 <label for="menu-toggle">
                     <span class="las la-bars"></span>
@@ -177,7 +177,7 @@ const DashboardAdmin = ({ setAuth }) => {
       </main>
       
       <div className="main-content">
-        <header>
+      <header className="header">
           <div className="header-content">
             <label htmlFor="menu-toggle">
               <span className="las la-bars"></span>
