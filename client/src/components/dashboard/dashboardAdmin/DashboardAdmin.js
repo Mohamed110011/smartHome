@@ -65,7 +65,7 @@ const DashboardAdmin = ({ setAuth }) => {
    <input type="checkbox" id="menu-toggle">
     <div class="sidebar">
         <div class="side-header">
-            <h3>M<span>odern</span></h3>
+          
         </div>
         
         <div class="side-content">
@@ -98,7 +98,7 @@ const DashboardAdmin = ({ setAuth }) => {
                         </a>
                     </li>
                     <li>
-                       <a href="">
+                       <a href="/StaticAdmin">
                             <span class="las la-clipboard-list"></span>
                             <small>Projects</small>
                         </a>
@@ -198,6 +198,7 @@ const DashboardAdmin = ({ setAuth }) => {
         </main>
       </div>
     </div>
+    
   );
 };
 export default DashboardAdmin;

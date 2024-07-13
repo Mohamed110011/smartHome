@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './styleLanding.css';
-import headerImage from './assets/header.jpg';
+import headerImage from './assets/header1.jpg';
 import plan1Image from './assets/plan-1.jpg';
 import plan2Image from './assets/plan-2.jpg';
 import plan3Image from './assets/plan-3.jpg';
@@ -31,109 +31,61 @@ const htmlContent = `
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styleLanding.css" />
-    <title>Web Design Mastery | Flivan</title>
+    <title>Smart Home Control | Flivan</title>
   </head>
   <body>
     <nav>
-      <div class="nav__logo">Flivan</div>
+      <div class="nav__logo">SMART HOME</div>
       <ul class="nav__links">
         <li class="link"><a href="#">Home</a></li>
         <li class="link"><a href="#">About</a></li>
-        <li class="link"><a href="#">Offers</a></li>
-        <li class="link"><a href="#">Seats</a></li>
-        <li class="link"><a href="#">Destinations</a></li>
+        <li class="link"><a href="#">Features</a></li>
+        <li class="link"><a href="#">Pricing</a></li>
+        <li class="link"><a href="#">Contact</a></li>
       </ul>
-<button class="btn" onclick="window.location.href='http://localhost:3000/login'">Login</button>    </nav>
+      <button class="btn" onclick="window.location.href='http://localhost:3000/login'">Login</button>
+    </nav>
     <header class="section__container header__container">
-      <h1 class="section__header">Find And Book<br />A Great Experience</h1>
+      <h1 class="section__header">Enjoy Smart Control<br />Your New Home</h1>
       <img src="${headerImage}" alt="header" />
     </header>
 
     <section class="section__container booking__container">
       <div class="booking__nav">
-        <span>Economy Class</span>
-        <span>Business Class</span>
-        <span>First Class</span>
+        <span>Basic Plan</span>
+        <span>Advanced Plan</span>
+        <span>Premium Plan</span>
       </div>
-      <form>
-        <div class="form__group">
-          <span><i class="ri-map-pin-line"></i></span>
-          <div class="input__content">
-            <div class="input__group">
-              <input type="text" />
-              <label>Location</label>
-            </div>
-            <p>Where are you goung?</p>
-          </div>
-        </div>
-        <div class="form__group">
-          <span><i class="ri-user-3-line"></i></span>
-          <div class="input__content">
-            <div class="input__group">
-              <input type="number" />
-              <label>Travellers</label>
-            </div>
-            <p>Add guests</p>
-          </div>
-        </div>
-        <div class="form__group">
-          <span><i class="ri-calendar-line"></i></span>
-          <div class="input__content">
-            <div class="input__group">
-              <input type="text" />
-              <label>Departure</label>
-            </div>
-            <p>Add date</p>
-          </div>
-        </div>
-        <div class="form__group">
-          <span><i class="ri-calendar-line"></i></span>
-          <div class="input__content">
-            <div class="input__group">
-              <input type="text" />
-              <label>Return</label>
-            </div>
-            <p>Add date</p>
-          </div>
-        </div>
-        <button class="btn"><i class="ri-search-line"></i></button>
-      </form>
     </section>
 
     <section class="section__container plan__container">
-      <p class="subheader">TRAVEL SUPPORT</p>
-      <h2 class="section__header">Plan your travel with confidence</h2>
+      <p class="subheader">SMART HOME FEATURES</p>
+      <h2 class="section__header">Control your home with confidence</h2>
       <p class="description">
-        Find help with your bookings and travel plans, and seee what to expect
-        along your journey.
+        Find help with your home automation and see what to expect along your journey to a smarter home.
       </p>
       <div class="plan__grid">
         <div class="plan__content">
           <span class="number">01</span>
-          <h4>Travel Requirements for Dubai</h4>
+          <h4>Smart Lighting</h4>
           <p>
-            Stay informed and prepared for your trip to Dubai with essential
-            travel requirements, ensuring a smooth and hassle-free experience in
-            this vibrant and captivating city.
+            Control your home's lighting with ease, ensuring a bright and energy-efficient living environment.
           </p>
           <span class="number">02</span>
-          <h4>Multi-risk travel insurance</h4>
+          <h4>Security Systems</h4>
           <p>
-            Comprehensive protection for your peace of mind, covering a range of
-            potential travel risks and unexpected situations.
+            Protect your home with advanced security systems, offering peace of mind and comprehensive protection.
           </p>
           <span class="number">03</span>
-          <h4>Travel Requirements by destinations</h4>
+          <h4>Temperature Control</h4>
           <p>
-            Stay informed and plan your trip with ease, as we provide up-to-date
-            information on travel requirements specific to your desired
-            destinations.
+            Maintain a comfortable home environment with smart thermostats and climate control systems.
           </p>
         </div>
         <div class="plan__image">
-          <img  src="${plan1Image}" alt="plan" />
-          <img  src="${plan2Image}" alt="plan" />
-          <img  src="${plan3Image}" alt="plan" />
+          <img src="${plan1Image}" alt="plan" />
+          <img src="${plan2Image}" alt="plan" />
+          <img src="${plan3Image}" alt="plan" />
         </div>
       </div>
     </section>
@@ -142,33 +94,30 @@ const htmlContent = `
       <div class="section__container memories__container">
         <div class="memories__header">
           <h2 class="section__header">
-            Travel to make memories all around the world
+            Make your home smarter with our solutions
           </h2>
           <button class="view__all">View All</button>
         </div>
         <div class="memories__grid">
           <div class="memories__card">
             <span><i class="ri-calendar-2-line"></i></span>
-            <h4>Book & relax</h4>
+            <h4>Automate & Relax</h4>
             <p>
-              With "Book and Relax," you can sit back, unwind, and enjoy the
-              journey while we take care of everything else.
+              With "Automate and Relax," enjoy the convenience of a fully automated home, giving you more time to unwind.
             </p>
           </div>
           <div class="memories__card">
             <span><i class="ri-shield-check-line"></i></span>
-            <h4>Smart Checklist</h4>
+            <h4>Smart Monitoring</h4>
             <p>
-              Introducing Smart Checklist with us, the innovative solution
-              revolutionizing the way you travel with our airline.
+              Introducing Smart Monitoring, revolutionizing the way you keep track of your home's activities and security.
             </p>
           </div>
           <div class="memories__card">
             <span><i class="ri-bookmark-2-line"></i></span>
-            <h4>Save More</h4>
+            <h4>Energy Savings</h4>
             <p>
-              From discounted ticket prices to exclusive promotions and deals,
-              we prioritize affordability without compromising on quality.
+              From efficient energy management to cost-saving tips, we prioritize sustainability without compromising on comfort.
             </p>
           </div>
         </div>
@@ -177,38 +126,34 @@ const htmlContent = `
 
     <section class="section__container lounge__container">
       <div class="lounge__image">
-        <img  src="${lounge1Image}" alt="lounge" />
-        <img  src="${lounge2Image}" alt="lounge" />
+        <img src="${lounge1Image}" alt="lounge" />
+        <img src="${lounge2Image}" alt="lounge" />
       </div>
       <div class="lounge__content">
-        <h2 class="section__header">Unaccompanied Minor Lounge</h2>
+        <h2 class="section__header">Exclusive Home Lounge</h2>
         <div class="lounge__grid">
           <div class="lounge__details">
-            <h4>Experience Tranquility</h4>
+            <h4>Experience Comfort</h4>
             <p>
-              Serenity Haven offers a tranquil escape, featuring comfortable
-              seating, calming ambiance, and attentive service.
+              Enjoy a comfortable living space with our smart home solutions, providing convenience and ease.
             </p>
           </div>
           <div class="lounge__details">
-            <h4>Elevate Your Experience</h4>
+            <h4>Upgrade Your Lifestyle</h4>
             <p>
-              Designed for discerning travelers, this exclusive lounge offers
-              premium amenities, assistance, and private workspaces.
+              Enhance your lifestyle with premium amenities, intelligent automation, and personalized settings.
             </p>
           </div>
           <div class="lounge__details">
-            <h4>A Welcoming Space</h4>
+            <h4>A Cozy Environment</h4>
             <p>
-              Creating a family-friendly atmosphere, The Family Zone is the
-              perfect haven for parents and children.
+              Create a welcoming atmosphere for your family and friends with our smart home technologies.
             </p>
           </div>
           <div class="lounge__details">
-            <h4>A Culinary Delight</h4>
+            <h4>Gourmet Experiences</h4>
             <p>
-              Immerse yourself in a world of flavors, offering international
-              cuisines, gourmet dishes, and carefully curated beverages.
+              Elevate your culinary experiences with smart kitchen appliances, offering convenience and innovation.
             </p>
           </div>
         </div>
@@ -216,38 +161,38 @@ const htmlContent = `
     </section>
 
     <section class="section__container travellers__container">
-      <h2 class="section__header">Best travellers of the month</h2>
+      <h2 class="section__header">Top Home Automation Users of the Month</h2>
       <div class="travellers__grid">
         <div class="travellers__card">
-          <img src="${traveller1}" alt="traveller" />
+          <img src="${traveller1}" alt="user" />
           <div class="travellers__card__content">
             <img src="${client1}" alt="client" />
             <h4>Emily Johnson</h4>
-            <p>Dubai</p>
+            <p>New York</p>
           </div>
         </div>
         <div class="travellers__card">
-          <img  src="${traveller2}" alt="traveller" />
+          <img src="${traveller2}" alt="user" />
           <div class="travellers__card__content">
             <img src="${client2}" alt="client" />
             <h4>David Smith</h4>
-            <p>Paris</p>
+            <p>San Francisco</p>
           </div>
         </div>
         <div class="travellers__card">
-          <img src="${traveller3}" alt="traveller" />
+          <img src="${traveller3}" alt="user" />
           <div class="travellers__card__content">
             <img src="${client3}" alt="client" />
             <h4>Olivia Brown</h4>
-            <p>Singapore</p>
+            <p>Chicago</p>
           </div>
         </div>
         <div class="travellers__card">
-          <img src="${traveller4}" alt="traveller" />
+          <img src="${traveller4}" alt="user" />
           <div class="travellers__card__content">
             <img src="${client4}" alt="client" />
             <h4>Daniel Taylor</h4>
-            <p>Malaysia</p>
+            <p>Miami</p>
           </div>
         </div>
       </div>
@@ -255,7 +200,7 @@ const htmlContent = `
 
     <section class="subscribe">
       <div class="section__container subscribe__container">
-        <h2 class="section__header">Subscribe newsletter & get latest news</h2>
+        <h2 class="section__header">Subscribe for Smart Home Updates</h2>
         <form class="subscribe__form">
           <input type="text" placeholder="Enter your email here" />
           <button class="btn">Subscribe</button>
@@ -268,22 +213,19 @@ const htmlContent = `
         <div class="footer__col">
           <h3>Flivan</h3>
           <p>
-            Where Excellence Takes Flight. With a strong commitment to customer
-            satisfaction and a passion for air travel, Flivan Airlines offers
-            exceptional service and seamless journeys.
+            Smart Home Solutions. With a commitment to innovation and customer satisfaction, Flivan offers advanced home automation services.
           </p>
           <p>
-            From friendly smiles to state-of-the-art aircraft, we connect the
-            world, ensuring safe, comfortable, and unforgettable experiences.
+            From smart lighting to security systems, we provide seamless and intelligent solutions for a better home experience.
           </p>
         </div>
         <div class="footer__col">
           <h4>INFORMATION</h4>
           <p>Home</p>
           <p>About</p>
-          <p>Offers</p>
-          <p>Seats</p>
-          <p>Destinations</p>
+          <p>Features</p>
+          <p>Pricing</p>
+          <p>Contact</p>
         </div>
         <div class="footer__col">
           <h4>CONTACT</h4>
@@ -293,11 +235,11 @@ const htmlContent = `
         </div>
       </div>
       <div class="section__container footer__bar">
-        <p>Copyright © 2023 Web Design Mastery. All rights reserved.</p>
+        <p>Copyright © 2023 Smart Home Solutions. All rights reserved.</p>
         <div class="socials">
           <span><i class="ri-facebook-fill"></i></span>
           <span><i class="ri-twitter-fill"></i></span>
-          <span><i class="ri-instagram-line"></i></span>
+          <span><i class="ri-instagram-line"></i></span
           <span><i class="ri-youtube-fill"></i></span>
         </div>
       </div>
