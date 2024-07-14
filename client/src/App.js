@@ -135,7 +135,7 @@ import DashboardAdmin from "./components/dashboard/dashboardAdmin/DashboardAdmin
 import DashboardUser from "./components/dashboard/dashbordUser/DashboardUser";
 import Landing from "./front/Landing";
 import StaticAdmin from "./components/dashboard/dashboardAdmin/StaticAdmin";
-import Inputdevice from "./components/dashboard/devicelist/Inputdevice";
+import Inputdevice from "./components/dashboard/dashbordUser/Inputdevice";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   

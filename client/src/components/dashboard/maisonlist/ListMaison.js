@@ -32,7 +32,9 @@ const ListMaisons = ({ allMaisons, setMaisonsChange }) => {
             <th>Address</th>
             <th>Edit</th>
             <th>Delete</th>
-            <th>Add device</th> {/* Add View column */}
+            <th>Add device</th>
+            <th>View devices</th>
+             {/* Add View column */}
           </tr>
         </thead>
         <tbody>
@@ -56,6 +58,11 @@ const ListMaisons = ({ allMaisons, setMaisonsChange }) => {
                 <td>
                   <Link to={`/devices/${maison.maison_id}`} className="btn btn-primary">
                     Add Device
+                  </Link>
+                </td>
+                <td>
+                  <Link to={`/devices/${maison.maison_id}`} className="btn btn-primary">
+                    View Devices
                   </Link>
                 </td>
               </tr>

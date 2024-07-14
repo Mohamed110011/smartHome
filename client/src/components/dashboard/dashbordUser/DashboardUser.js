@@ -84,7 +84,7 @@ const DashboardUser = ({ setAuth }) => {
             <div class="side-menu">
                 <ul>
                     <li>
-                       <a onclick="window.location.href='http://localhost:3000/dashboard-admin'" class="active">
+                       <a onclick="window.location.href='http://localhost:3000/dashboard-user'" class="active">
                             <span class="las la-home"></span>
                             <small>Dashboard</small>
                         </a>
