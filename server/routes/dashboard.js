@@ -212,6 +212,7 @@ router.get("/devices/:maison_id", authorization, async (req, res) => {
   try {
     const { maison_id } = req.params;
     const allDevices = await pool.query("SELECT * FROM devices WHERE maison_id = $1", [maison_id]);
+    console.log('All devices:', allDevices.rows); // Debugging log
     res.json(allDevices.rows);
   } catch (err) {
     console.error(err.message);

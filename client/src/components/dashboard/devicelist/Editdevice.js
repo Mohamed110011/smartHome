@@ -45,7 +45,7 @@ const Editdevice = ({ device }) => {
       });
 
       console.log("Response:", response);
-      window.location = `/devices/${device.maison_id}`;
+      window.location = `/maison/${device.maison_id}`;
     } catch (err) {
       console.error(err.message);
     }

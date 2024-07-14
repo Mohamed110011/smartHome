@@ -4,6 +4,10 @@ import Listdevice from "../devicelist/Listdevice";
 import './StyleUser.css';
 import headerImage from './img/1.png';
 
+
+
+
+
 const InputDeviceList = () => {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
@@ -78,10 +82,6 @@ const InputDeviceList = () => {
         <div class="side-content">
             <div class="profile">
                
-<img  class="profile-img bg-img" src="${headerImage}" alt="Client Image">
-
-                <h4>${name}</h4>
-                <small>Art Director</small>
             </div>
 
             <div class="side-menu">

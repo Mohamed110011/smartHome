@@ -136,6 +136,7 @@ import DashboardUser from "./components/dashboard/dashbordUser/DashboardUser";
 import Landing from "./front/Landing";
 import StaticAdmin from "./components/dashboard/dashboardAdmin/StaticAdmin";
 import Inputdevice from "./components/dashboard/dashbordUser/Inputdevice";
+import Devices from "./components/dashboard/dashbordUser/Devices";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
@@ -181,8 +182,13 @@ const App = () => {
           />
          <Route
   exact
-  path={`/devices/:maison_id`}
+  path={`/maison/:maison_id`}
   element={<Inputdevice setAuth={setAuth} />}
+/>
+<Route
+  exact
+  path={`/devices/:maison_id`}
+  element={<Devices setAuth={setAuth} />}
 />
 
         </Routes>
