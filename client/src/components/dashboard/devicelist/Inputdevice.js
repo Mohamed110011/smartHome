@@ -55,6 +55,7 @@ const InputDeviceList = () => {
   const shouldHideValuesAndMode = () => {
     return type === "lampe"; // Masquer si le type est "lampe"
   };
+  
 
   return (
     <Fragment>

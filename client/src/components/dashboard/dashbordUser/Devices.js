@@ -1,29 +1,59 @@
 import React, { useEffect, useState } from "react";
-import './styleAdmin.css';
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import './StyleUser.css';
 import headerImage from './img/1.png';
 
+// components
+import InputMaison from "../maisonlist/InputMaison";
+import ListMaisons from "../maisonlist/ListMaison";
 
+const DashboardUser = ({ setAuth }) => {
+  const [name, setName] = useState("");
+  const [allMaisons, setAllMaisons] = useState([]);
+  const [maisonsChange, setMaisonsChange] = useState(false);
+  const navigate = useNavigate();
 
-const UserStatistics = () => {
-    const [name, setName] = useState("Admin");
-  const [stats, setStats] = useState(null);
-
-  const fetchStatistics = async () => {
+  const getProfile = async () => {
     try {
-      const response = await fetch("http://localhost:5000/dashboard/user-stats", {
+      const res = await fetch("http://localhost:5000/dashboard/", {
         method: "GET",
-        headers: { "Content-Type": "application/json", token: localStorage.token }
+        headers: { token: localStorage.token }
       });
-      const jsonData = await response.json();
-      setStats(jsonData);
+
+      const parseData = await res.json();
+
+      if (parseData.length > 0) {
+        setAllMaisons(parseData);
+        setName(parseData[0].user_name);
+      }
     } catch (err) {
       console.error(err.message);
+      toast.error("Failed to load profile data");
+    }
+  };
+
+  const logout = async (e) => {
+    e.preventDefault();
+    try {
+      if (localStorage.token)
+      localStorage.removeItem("token");
+      setAuth(false);
+      toast.success("Logout successfully");
+      navigate("/login"); // Redirige vers la page principale de l'application après le logout
+    } catch (err) {
+      console.error(err.message);
+      toast.error("Failed to logout");
     }
   };
 
   useEffect(() => {
-    fetchStatistics();
-  }, []);
+    getProfile();
+    setMaisonsChange(false);
+  }, [maisonsChange]);
+
+
+
 
   const htmlContent = `
   <!DOCTYPE html>
@@ -39,7 +69,7 @@ const UserStatistics = () => {
    <input type="checkbox" id="menu-toggle">
     <div class="sidebar">
         <div class="side-header">
-          
+            <h3>M<span>odern</span></h3>
         </div>
         
         <div class="side-content">
@@ -55,6 +85,7 @@ const UserStatistics = () => {
                 <ul>
                     <li>
                        <a onclick="window.location.href='http://localhost:3000/dashboard-admin'" class="active">
+                            <span class="las la-home"></span>
                             <small>Dashboard</small>
                         </a>
                     </li>
@@ -71,7 +102,7 @@ const UserStatistics = () => {
                         </a>
                     </li>
                     <li>
-                       <a href="/StaticAdmin">
+                       <a href="">
                             <span class="las la-clipboard-list"></span>
                             <small>Projects</small>
                         </a>
@@ -135,24 +166,22 @@ const UserStatistics = () => {
 
   `;
 
- 
-    return(
-    <main>
-    <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-    <h1 >User Statistics</h1>
+  return (
     
+     
+      <main>
+      <div className="d-flex mt-5 justify-content-around">
+        <h2>{name}'s Maison List</h2>
+        <button onClick={logout} className="btn btn-primary">
+          Logout
+        </button>
+      </div>
+          <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+        
+      <InputMaison setMaisonsChange={setMaisonsChange} />
+      <ListMaisons allMaisons={allMaisons} setMaisonsChange={setMaisonsChange} />
+      </main>
+  );
+};
 
-
-
-
-  </main>
-    ) 
-  }
-
-
-
-
-  
-
-
-export default UserStatistics;
+export default DashboardUser;
