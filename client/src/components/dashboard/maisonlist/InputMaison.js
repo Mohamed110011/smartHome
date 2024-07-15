@@ -33,8 +33,8 @@ const InputMaison = ({ setMaisonsChange }) => {
 
   return (
     <Fragment>
-      <h1 className="text-center my-5">Input Maison</h1>
-      <form className="d-flex flex-column" onSubmit={onSubmitForm}>
+      <h1 className="text-center my-5">Input House</h1>
+      <form className="d-flex flex-column  " onSubmit={onSubmitForm}>
         <input
           type="text"
           placeholder="add description"
@@ -49,7 +49,7 @@ const InputMaison = ({ setMaisonsChange }) => {
           value={address}
           onChange={e => setAddress(e.target.value)}
         />
-        <button className="btn btn-success mt-2">Add</button>
+        <button className="btn btn-success mt-4">Add</button>
       </form>
     </Fragment>
   );

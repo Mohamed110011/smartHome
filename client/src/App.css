@@ -28,6 +28,40 @@
   color: #61dafb;
 }
 
+
+
+
+
+.side-menu {
+  background-color: #343a40; /* Bootstrap dark background */
+  color: white;
+  height: 100vh; /* Full height */
+}
+
+.side-menu .list-group-item {
+  background-color: #343a40; /* Match the sidebar background */
+  border: none;
+}
+
+.side-menu .list-group-item a {
+  color: white;
+  text-decoration: none;
+}
+
+.side-menu .list-group-item a:hover {
+  color: #ffc107; /* Bootstrap warning color for hover effect */
+}
+
+.side-menu .list-group-item a .las {
+  margin-right: 10px; /* Spacing between icon and text */
+}
+
+
+
+
+
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

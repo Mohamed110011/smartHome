@@ -137,6 +137,7 @@ import Landing from "./front/Landing";
 import StaticAdmin from "./components/dashboard/dashboardAdmin/StaticAdmin";
 import Inputdevice from "./components/dashboard/dashbordUser/Inputdevice";
 import Devices from "./components/dashboard/dashbordUser/Devices";
+import Header from "./components/Header";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
@@ -144,16 +145,22 @@ const App = () => {
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
   };
+  
 
   return (
     <Router>
-      <div className="container">
         <Routes>
           <Route
             exact
             path="/login"
             element={<Login setAuth={setAuth} />}
           />
+            <Route
+            exact
+            path="/register"
+            element={<Register setAuth={setAuth}/>}
+          />
+          <Route element={<Header setAuth={setAuth} />}>
           <Route
             exact
             path="/dashboard-admin"
@@ -164,11 +171,7 @@ const App = () => {
             path="/dashboard-user"
             element={<DashboardUser setAuth={setAuth} />}
           />
-          <Route
-            exact
-            path="/register"
-            element={<Register setAuth={setAuth}/>}
-          />
+        
           <Route
             exact
             path="/StaticAdmin"
@@ -190,9 +193,8 @@ const App = () => {
   path={`/devices/:maison_id`}
   element={<Devices setAuth={setAuth} />}
 />
-
+</Route>
         </Routes>
-      </div>
     </Router>
   );
 };
