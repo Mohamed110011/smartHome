@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import DeviceCard from '../card/DeviceCard';
 
-// Fetches names, types, statuses, values, and modes of devices from the server and displays them in a list of cards on the page for maison_id
 const Devices = () => {
   const { maison_id } = useParams();
   const [devices, setDevices] = useState([]);
@@ -26,20 +25,16 @@ const Devices = () => {
   }, []);
 
   return (
-    <div>
-      {devices.map((device) => (
-        <DeviceCard key={device.device_id} device={device} />
-      ))}
+    <div className="container">
+      <div className="row">
+        {devices.map((device) => (
+          <div key={device.device_id} className="col-lg-4 col-md-6 mb-4">
+            <DeviceCard device={device} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-
-
-
-
-
-
-
-  
 export default Devices;

@@ -178,11 +178,7 @@ const App = () => {
             element={<StaticAdmin />}
           />
         
-        <Route
-            exact
-            path="/landing"
-            element={<Landing />}
-          />
+       
          <Route
   exact
   path={`/maison/:maison_id`}
@@ -194,6 +190,11 @@ const App = () => {
   element={<Devices setAuth={setAuth} />}
 />
 </Route>
+<Route
+            exact
+            path="/landing"
+            element={<Landing />}
+          />
         </Routes>
     </Router>
   );
