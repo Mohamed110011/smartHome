@@ -14,6 +14,7 @@ const ListMaisons = ({ allMaisons, setMaisonsChange }) => {
       });
 
       setMaisons(maisons.filter(maison => maison.maison_id !== id));
+      setMaisonsChange(true);
     } catch (err) {
       console.error(err.message);
     }
@@ -38,7 +39,7 @@ const ListMaisons = ({ allMaisons, setMaisonsChange }) => {
           </tr>
         </thead>
         <tbody>
-          {maisons.length !== 0 &&
+          {maisons && maisons.length !== 0 &&
             maisons[0].maison_id !== null &&
             maisons.map(maison => (
               <tr key={maison.maison_id}>

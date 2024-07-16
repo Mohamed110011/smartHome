@@ -44,7 +44,7 @@ const DashboardUser = ({ setAuth }) => {
 
 
   return (
-    <><InputMaison />
+    <><InputMaison setMaisonsChange={setMaisonsChange}  />
     <ListMaisons allMaisons={allMaisons} setMaisonsChange={setMaisonsChange} />
    </>
    
