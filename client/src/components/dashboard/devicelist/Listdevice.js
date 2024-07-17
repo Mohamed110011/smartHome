@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { useParams } from "react-router-dom";
 import Editdevice from "./Editdevice";
 
@@ -18,6 +18,14 @@ const Listdevice = ({ devices, fetchDevices }) => {
     }
   };
 
+  const shouldHideValues = (type) => {
+    return type !== "air_conditioner" && type !== "sensor";
+  };
+
+  const shouldHideMode = (type) => {
+    return type !== "air_conditioner";
+  };
+
   return (
     <Fragment>
       <h1>Devices</h1>
@@ -28,7 +36,7 @@ const Listdevice = ({ devices, fetchDevices }) => {
             <th>Device Type</th>
             <th>Device Status</th>
             <th>Device Value</th>
-            <th>Device mode</th>
+            <th>Device Mode</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
@@ -40,10 +48,10 @@ const Listdevice = ({ devices, fetchDevices }) => {
                 <td>{device.name}</td>
                 <td>{device.type}</td>
                 <td>{device.status ? "Active" : "Inactive"}</td>
-                <td>{device.values}</td>
-                <td>{device.mode}</td>
+                <td>{shouldHideValues(device.type) ? "-" : device.values}</td>
+                <td>{shouldHideMode(device.type) ? "-" : device.mode}</td>
                 <td>
-                  <Editdevice device={device} setDevicesChange={fetchDevices} />
+                  <Editdevice device={device} fetchDevices={fetchDevices} />
                 </td>
                 <td>
                   <button

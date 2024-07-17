@@ -1,39 +1,21 @@
 import React, { Fragment, useState } from "react";
 
-
-
-// router.put("/devices/:id", authorization, async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { name, type, status, values, mode } = req.body;
-//     const updateDevice = await pool.query(
-//       "UPDATE devices SET name = $1, type = $2, status = $3, values = $4, mode = $5 WHERE device_id = $6 RETURNING *",
-//       [name, type, status, values, mode, id]
-//     );
-
-//     if (updateDevice.rows.length === 0) {
-//       return res.json("This device does not exist");
-//     }
-
-//     res.json("Device was updated");
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).send("Server error");
-//   }
-// });
-
-
-
-
-
-const Editdevice = ({ device }) => {
+const Editdevice = ({ device, fetchDevices }) => {
   const [name, setName] = useState(device.name);
   const [type, setType] = useState(device.type);
   const [status, setStatus] = useState(device.status);
   const [values, setValues] = useState(device.values);
   const [mode, setMode] = useState(device.mode);
 
-  // edit device function
+  const shouldHideValues = () => {
+    return type !== "air_conditioner" && type !== "sensor";
+  };
+
+  const shouldHideMode = () => {
+    return type !== "air_conditioner";
+  };
+
+  // Function to update device information
   const updateDevice = async (e) => {
     e.preventDefault();
     try {
@@ -44,8 +26,13 @@ const Editdevice = ({ device }) => {
         body: JSON.stringify(body)
       });
 
-      console.log("Response:", response);
-      window.location = `/maison/${device.maison_id}`;
+      // Check response status or handle as needed
+      if (response.ok) {
+        console.log("Device updated successfully");
+        fetchDevices(); // Refresh the device list
+      } else {
+        console.error("Failed to update device");
+      }
     } catch (err) {
       console.error(err.message);
     }
@@ -75,7 +62,6 @@ const Editdevice = ({ device }) => {
       >
         <div className="modal-dialog">
           <div className="modal-content">
-
             <div className="modal-header">
               <h4 className="modal-title">Edit Device</h4>
               <button
@@ -95,36 +81,54 @@ const Editdevice = ({ device }) => {
             </div>
 
             <div className="modal-body">
+              <label htmlFor="name">Name</label>
               <input
                 type="text"
-                className="form-control my-2"
+                className="form-control"
+                id="name"
                 value={name}
-                onChange={e => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
               />
+              <label htmlFor="type">Type</label>
               <input
                 type="text"
-                className="form-control my-2"
+                className="form-control"
+                id="type"
                 value={type}
-                onChange={e => setType(e.target.value)}
+                onChange={(e) => setType(e.target.value)}
               />
+              <label htmlFor="status">Status</label>
               <input
                 type="text"
-                className="form-control my-2"
+                className="form-control"
+                id="status"
                 value={status}
-                onChange={e => setStatus(e.target.value)}
+                onChange={(e) => setStatus(e.target.value)}
               />
-              <input
-                type="text"
-                className="form-control my-2"
-                value={values}
-                onChange={e => setValues(e.target.value)}
-              />
-              <input
-                type="text"
-                className="form-control my-2"
-                value={mode}
-                onChange={e => setMode(e.target.value)}
-              />
+              {!shouldHideValues() && (
+                <Fragment>
+                  <label htmlFor="values">Values</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="values"
+                    value={values}
+                    onChange={(e) => setValues(e.target.value)}
+                  />
+                </Fragment>
+              )}
+              {!shouldHideMode() && (
+                <Fragment>
+                  <label htmlFor="mode">Mode</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="mode"
+                    value={mode}
+                    onChange={(e) => setMode(e.target.value)}
+                  />
+                </Fragment>
+              )}
             </div>
 
             <div className="modal-footer">
@@ -132,9 +136,9 @@ const Editdevice = ({ device }) => {
                 type="button"
                 className="btn btn-warning"
                 data-dismiss="modal"
-                onClick={e => updateDevice(e)}
+                onClick={updateDevice}
               >
-                Edit
+                Save Changes
               </button>
               <button
                 type="button"
@@ -151,12 +155,11 @@ const Editdevice = ({ device }) => {
                 Close
               </button>
             </div>
-
           </div>
         </div>
       </div>
     </Fragment>
   );
-}
+};
 
 export default Editdevice;
