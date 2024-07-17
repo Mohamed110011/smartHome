@@ -1,11 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Listdevice from "../devicelist/Listdevice";
-;
-
-
-
-
 
 const InputDeviceList = () => {
   const [name, setName] = useState("");
@@ -33,7 +28,7 @@ const InputDeviceList = () => {
 
   useEffect(() => {
     fetchDevices();
-  }, [refresh]); // Appeler fetchDevices lorsque refresh change
+  }, [refresh]);
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
@@ -45,7 +40,7 @@ const InputDeviceList = () => {
         body: JSON.stringify(body)
       });
 
-      setRefresh((prev) => !prev); // Inverser l'état de refresh pour déclencher useEffect
+      setRefresh((prev) => !prev);
       setName("");
       setType("");
       setStatus("");
@@ -56,17 +51,17 @@ const InputDeviceList = () => {
     }
   };
 
-  // Fonction pour déterminer si les champs add values et add mode doivent être masqués
   const shouldHideValuesAndMode = () => {
-    return type === "lampe"; // Masquer si le type est "lampe"
-  };
-  
+    return type === "lamp"  || type === "Washing Machine" || type === "Refrigerator" || type === "Router" || type === "Television" || type === "Music System" || type === "Camera"  ;
 
+
+  };
 
   return (
     <Fragment>
       <h1 className="text-center my-5">Input Device</h1>
       <form className="d-flex flex-column" onSubmit={onSubmitForm}>
+        <label htmlFor="name">Device Name</label>
         <input
           type="text"
           placeholder="add name"
@@ -75,114 +70,61 @@ const InputDeviceList = () => {
           onChange={(e) => setName(e.target.value)}
         />
         <div className="form-group my-2">
-          {/* Type de périphérique */}
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="type"
-              id="capteur"
-              value="capteur"
-              checked={type === "capteur"}
-              onChange={(e) => setType(e.target.value)}
-            />
-            <label className="form-check-label" htmlFor="capteur">
-              Capteur
-            </label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="type"
-              id="lampe"
-              value="lampe"
-              checked={type === "lampe"}
-              onChange={(e) => setType(e.target.value)}
-            />
-            <label className="form-check-label" htmlFor="lampe">
-              Lampe
-            </label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="type"
-              id="climatiseur"
-              value="climatiseur"
-              checked={type === "climatiseur"}
-              onChange={(e) => setType(e.target.value)}
-            />
-            <label className="form-check-label" htmlFor="climatiseur">
-              Climatiseur
-            </label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="type"
-              id="caméra"
-              value="caméra"
-              checked={type === "caméra"}
-              onChange={(e) => setType(e.target.value)}
-            />
-            <label className="form-check-label" htmlFor="caméra">
-              Caméra
-            </label>
-          </div>
+          <label htmlFor="type">Device Type</label>
+          <select
+            className="form-control"
+            id="type"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          >
+            <option value="">Select type</option>
+            <option value="sensor">Sensor</option>
+            <option value="lamp">Lamp</option>
+            <option value="air_conditioner">Air Conditioner</option>
+            <option value="camera">Camera</option>
+            <option value="refrigerator">Refrigerator</option>
+            <option value="router">Router</option>
+            <option value="television">Television</option>
+            <option value="music system">Music System</option>
+            <option value="washing_machine">Washing Machine</option>
+          </select>
         </div>
-        {/* Statut */}
         <div className="form-group my-2">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="status"
-              id="true"
-              value="true"
-              checked={status === "true"}
-              onChange={(e) => setStatus(e.target.value)}
-            />
-            <label className="form-check-label" htmlFor="true">
-              True
-            </label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="status"
-              id="false"
-              value="false"
-              checked={status === "false"}
-              onChange={(e) => setStatus(e.target.value)}
-            />
-            <label className="form-check-label" htmlFor="false">
-              False
-            </label>
-          </div>
+          <label htmlFor="status">Status</label>
+          <select
+            className="form-control"
+            id="status"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="">Select status</option>
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
         </div>
-        {/* Champ values (masqué si type est lampe) */}
         {!shouldHideValuesAndMode() && (
-          <input
-            type="text"
-            placeholder="add values"
-            className="form-control my-2"
-            value={values}
-            onChange={(e) => setValues(e.target.value)}
-          />
+          <div>
+            <label htmlFor="values">Device Value</label>
+            <input
+              type="text"
+              placeholder="add value"
+              className="form-control my-2"
+              value={values}
+              onChange={(e) => setValues(e.target.value)}
+            />
+          </div>
         )}
-        {/* Champ mode (masqué si type est lampe) */}
         {!shouldHideValuesAndMode() && (
-          <input
-            type="text"
-            placeholder="add mode"
-            className="form-control my-2"
-            value={mode}
-            onChange={(e) => setMode(e.target.value)}
-          />
+          <div>
+            <label htmlFor="mode">Device Mode</label>
+            <input
+              type="text"
+              placeholder="add mode"
+              className="form-control my-2"
+              value={mode}
+              onChange={(e) => setMode(e.target.value)}
+            />
+          </div>
         )}
         <button className="btn btn-success mt-2">Add</button>
       </form>
