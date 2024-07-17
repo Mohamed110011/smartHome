@@ -2,40 +2,9 @@ const router = require("express").Router();
 const pool = require("../db");
 const authorization = require("../middleware/authorization");
 
-const { OAuth2Client } = require("google-auth-library");
 
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-router.post("/auth/google", async (req, res) => {
-    const { token } = req.body;
-
-    try {
-        const ticket = await client.verifyIdToken({
-            idToken: token,
-            audience: process.env.GOOGLE_CLIENT_ID
-        });
-        const { email, name } = ticket.getPayload();
-
-        let user = await pool.query("SELECT * FROM users WHERE user_email = $1", [email]);
-
-        if (user.rows.length === 0) {
-            user = await pool.query(
-                "INSERT INTO users (user_name, user_email) VALUES ($1, $2) RETURNING *",
-                [name, email]
-            );
-        }
-
-        const jwtToken = jwt.sign({ user_id: user.rows[0].user_id }, process.env.JWT_SECRET, {
-            expiresIn: "1h"
-        });
-
-        res.json({ token: jwtToken });
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).json("Server error");
-    }
-});
 
 // Get all Users sauf name="admin"
 router.get("/users", async (req, res) => {

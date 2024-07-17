@@ -1,8 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { GoogleLogin } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
 import "../assets/css/Registre.css";
 
 const Register = ({ setAuth }) => {
@@ -42,20 +40,6 @@ const Register = ({ setAuth }) => {
         }
     };
 
-    const handleGoogleSuccess = (response) => {
-        const userObject = jwt_decode(response.credential);
-        console.log(userObject); // Handle Google user data
-        // You might want to send this data to your server for further processing
-        setAuth(true);
-        setIsAuthenticated(true);
-        toast.success("Logged in with Google");
-    };
-
-    const handleGoogleFailure = (error) => {
-        console.log(error);
-        toast.error("Google Sign In was unsuccessful. Try again later");
-    };
-
     if (isAuthenticated) { // Use isAuthenticated state for navigation
         return <Navigate to="/dashboard-user" />;
     }
@@ -88,15 +72,9 @@ const Register = ({ setAuth }) => {
                     />
                     <button type="submit">Register</button>
                 </form>
-                <GoogleLogin
-                    onSuccess={handleGoogleSuccess}
-                    onFailure={handleGoogleFailure}
-                    cookiePolicy="single_host_origin"
-                />
                 <Link to="/login">Login</Link>
             </div>
         </Fragment>
     );
 };
-
 export default Register;
