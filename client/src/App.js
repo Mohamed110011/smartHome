@@ -138,6 +138,8 @@ import StaticAdmin from "./components/dashboard/dashboardAdmin/StaticAdmin";
 import Inputdevice from "./components/dashboard/dashbordUser/Inputdevice";
 import Devices from "./components/dashboard/dashbordUser/Devices";
 import Header from "./components/Header";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   

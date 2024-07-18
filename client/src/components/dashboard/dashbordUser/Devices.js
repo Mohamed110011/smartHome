@@ -29,7 +29,7 @@ const Devices = () => {
       <div className="row">
         {devices.map((device) => (
           <div key={device.device_id} className="col-lg-4 col-md-6 mb-4">
-            <DeviceCard device={device} />
+            <DeviceCard device={device} fetchDevices={getDevices} />
           </div>
         ))}
       </div>
