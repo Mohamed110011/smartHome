@@ -5,7 +5,6 @@ const authorization = require("../middleware/authorization");
 
 
 
-
 // Get all Users sauf name="admin"
 router.get("/users", async (req, res) => {
   try {
@@ -223,6 +222,42 @@ router.get("/devices/:maison_id", authorization, async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+
+
+// Update device status
+router.put('/dashboard/devices/:device_id/status', async (req, res) => {
+  try {
+    const deviceId = req.params.device_id;
+    const newStatus = req.body.status;
+
+    // Update the device status
+    const result = await pool.query(
+      'UPDATE devices SET status = $1 WHERE device_id = $2 RETURNING *',
+      [newStatus, deviceId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Device not found' });
+    }
+
+    // Return the updated device
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error updating status:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+ 
+
+
+
+
+
+
+
+
+
 
 
 module.exports = router;
