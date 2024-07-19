@@ -249,6 +249,29 @@ router.put('/dashboard/devices/:device_id/status', async (req, res) => {
   }
 });
  
+// Update device mode
+router.put('/dashboard/devices/:device_id/mode', async (req, res) => {
+  try {
+    const deviceId = req.params.device_id;
+    const newMode = req.body.mode;
+
+    // Update the device mode
+    const result = await pool.query(
+      'UPDATE devices SET mode = $1 WHERE device_id = $2 RETURNING *',
+      [newMode, deviceId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Device not found' });
+    }
+
+    // Return the updated device
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error updating mode:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 
