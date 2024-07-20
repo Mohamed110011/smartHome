@@ -33,6 +33,17 @@ const Devices = () => {
     setFilteredDevices(
       devices.filter(device =>
         device.name.toLowerCase().includes(query.toLowerCase())
+
+        // Ajoutez d'autres critères de recherche ici
+        || device.type.toLowerCase().includes(query.toLowerCase())
+        || device.status.toString().toLowerCase().includes(query.toLowerCase())
+        || device.values.toString().toLowerCase().includes(query.toLowerCase())
+        || device.mode.toLowerCase().includes(query.toLowerCase())
+
+
+
+
+
       )
     );
   };

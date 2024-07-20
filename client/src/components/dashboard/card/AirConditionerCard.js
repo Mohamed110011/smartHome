@@ -12,11 +12,9 @@ const AirConditionerCard = ({ device, fetchDevices }) => {
     setMode(device.mode);
   }, [device.status, device.mode]);
 
-  // Fonction pour mettre à jour le status dans la base de données
   const updateStatusInDatabase = async (newStatus) => {
     try {
       setIsLoading(true);
-      console.log(`Sending PUT request to update status to: ${newStatus} for device ID: ${device.device_id}`);
       const response = await fetch(`http://localhost:5000/dashboard/dashboard/devices/${device.device_id}/status`, {
         method: 'PUT',
         headers: {
@@ -25,27 +23,23 @@ const AirConditionerCard = ({ device, fetchDevices }) => {
         body: JSON.stringify({ status: newStatus }),
       });
 
-      console.log('Response status:', response.status);
       if (!response.ok) {
         throw new Error('Failed to update status');
       }
 
       const updatedDevice = await response.json();
-      console.log('Received updated device:', updatedDevice);
       setStatus(updatedDevice.status);
       setIsLoading(false);
-      fetchDevices(); // Refresh the device list after update
+      fetchDevices();
     } catch (error) {
       console.error('Error updating status:', error);
       setIsLoading(false);
     }
   };
 
-  // Fonction pour mettre à jour le mode dans la base de données
   const updateModeInDatabase = async (newMode) => {
     try {
       setIsLoading(true);
-      console.log(`Sending PUT request to update mode to: ${newMode} for device ID: ${device.device_id}`);
       const response = await fetch(`http://localhost:5000/dashboard/dashboard/devices/${device.device_id}/mode`, {
         method: 'PUT',
         headers: {
@@ -54,33 +48,26 @@ const AirConditionerCard = ({ device, fetchDevices }) => {
         body: JSON.stringify({ mode: newMode }),
       });
 
-      console.log('Response status:', response.status);
       if (!response.ok) {
         throw new Error('Failed to update mode');
       }
 
       const updatedDevice = await response.json();
-      console.log('Received updated device:', updatedDevice);
       setMode(updatedDevice.mode);
       setIsLoading(false);
-      fetchDevices(); // Refresh the device list after update
+      fetchDevices();
     } catch (error) {
       console.error('Error updating mode:', error);
       setIsLoading(false);
     }
   };
 
-  // Fonction pour basculer le status
   const toggleStatus = () => {
     const newStatus = !status;
-    console.log(`Toggling status from ${status} to ${newStatus}`);
     updateStatusInDatabase(newStatus);
   };
 
-  // Fonction pour gérer le changement de mode
-  const handleModeChange = (event) => {
-    event.stopPropagation(); // Empêche la propagation de l'événement de clic
-    const newMode = event.target.value;
+  const handleModeChange = (newMode) => {
     setMode(newMode);
     updateModeInDatabase(newMode);
   };
@@ -90,12 +77,12 @@ const AirConditionerCard = ({ device, fetchDevices }) => {
     margin: '1rem',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     borderRadius: '10px',
-    backgroundColor: status ? '#d4edda' : '#f8d7da', // Green if on, red if off
-    position: 'relative', // Ensure the card is the relative reference for the toggle switch
+    backgroundColor: status ? '#d4edda' : '#f8d7da',
+    position: 'relative',
   };
 
   const cardBodyStyle = {
-    padding: '1rem'
+    padding: '1rem',
   };
 
   const switchContainerStyle = {
@@ -108,8 +95,8 @@ const AirConditionerCard = ({ device, fetchDevices }) => {
   const switchStyle = {
     position: 'relative',
     display: 'inline-block',
-    width: '40px',  // Smaller width
-    height: '24px', // Smaller height
+    width: '40px',
+    height: '24px',
   };
 
   const sliderStyle = {
@@ -119,24 +106,30 @@ const AirConditionerCard = ({ device, fetchDevices }) => {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: status ? '#4CAF50' : '#ccc', // Green if on, grey if off
+    backgroundColor: status ? '#4CAF50' : '#ccc',
     transition: '.4s',
-    borderRadius: '20px', // Smaller radius for a sleeker look
-    boxShadow: 'none', // Remove shadow
+    borderRadius: '20px',
+    boxShadow: 'none',
   };
 
   const sliderBeforeStyle = {
     position: 'absolute',
     content: '""',
-    height: '20px', // Smaller height
-    width: '20px',  // Smaller width
+    height: '20px',
+    width: '20px',
     borderRadius: '50%',
-    left: '2px',    // Adjusted for smaller size
-    bottom: '2px',  // Adjusted for smaller size
+    left: '2px',
+    bottom: '2px',
     backgroundColor: 'white',
     transition: '.4s',
-    transform: status ? 'translateX(16px)' : 'translateX(0)', // Adjusted for smaller size
-    boxShadow: 'none', // Remove shadow
+    transform: status ? 'translateX(16px)' : 'translateX(0)',
+    boxShadow: 'none',
+  };
+
+  const darkPinkButtonStyle = {
+    backgroundColor: '#FF8FAF', // Darker pink color
+    color: 'white',
+    borderColor: '#FF8FAF',
   };
 
   return (
@@ -151,20 +144,47 @@ const AirConditionerCard = ({ device, fetchDevices }) => {
       </div>
       <div className="card-body air-conditioner-card-body" style={cardBodyStyle}>
         <div className="d-flex align-items-center mb-3">
-          <i className="fas fa-snowflake fa-2x mr-3"></i> {/* Icône de climatiseur */}
+          <i className="fas fa-snowflake fa-2x mr-3"></i>
           <h5 className="card-title mb-0">{device.name}</h5>
         </div>
         <p className="card-text"><strong>Type:</strong> {device.type}</p>
         <p className="card-text"><strong>Status:</strong> {status ? 'Active' : 'Inactive'}</p>
         <p className="card-text"><strong>Values:</strong> {device.values}</p>
         <p className="card-text">
-          <strong>Mode:</strong>
-          <select value={mode} onChange={handleModeChange} className="form-select mt-2">
-            <option value="cool">Cool</option>
-            <option value="heat">Heat</option>
-            <option value="fan">Fan</option>
-            <option value="auto">Auto</option>
-          </select>
+          <div className="btn-group mt-2 ml-5">
+            <button
+              type="button"
+              className={`btn ${mode === 'cool' ? 'btn-success' : ''}`}
+              style={mode !== 'cool' ? darkPinkButtonStyle : {}}
+              onClick={() => handleModeChange('cool')}
+            >
+              <i className="fas fa-snowflake"></i>
+            </button>
+            <button
+              type="button"
+              className={`btn ${mode === 'heat' ? 'btn-success' : ''}`}
+              style={mode !== 'heat' ? darkPinkButtonStyle : {}}
+              onClick={() => handleModeChange('heat')}
+            >
+              <i className="fas fa-fire"></i>
+            </button>
+            <button
+              type="button"
+              className={`btn ${mode === 'fan' ? 'btn-success' : ''}`}
+              style={mode !== 'fan' ? darkPinkButtonStyle : {}}
+              onClick={() => handleModeChange('fan')}
+            >
+              <i className="fas fa-fan"></i>
+            </button>
+            <button
+              type="button"
+              className={`btn ${mode === 'auto' ? 'btn-success' : ''}`}
+              style={mode !== 'auto' ? darkPinkButtonStyle : {}}
+              onClick={() => handleModeChange('auto')}
+            >
+              <i className="fas fa-sync-alt"></i>
+            </button>
+          </div>
         </p>
         {isLoading && <p>Updating...</p>}
       </div>

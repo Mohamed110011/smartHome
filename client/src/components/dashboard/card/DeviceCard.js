@@ -1,6 +1,9 @@
 import React from 'react';
 import AirConditionerCard from './AirConditionerCard';
 import SensorCard from './SensorCard';
+import LampCard from './LampCard';
+import CameraCard from './CameraCard';
+import RefrigeratorCard from './RefrigeratorCard';
 // Import other specific card components
 
 const DeviceCard = ({ device, fetchDevices }) => {
@@ -10,6 +13,12 @@ const DeviceCard = ({ device, fetchDevices }) => {
         return <AirConditionerCard device={device} fetchDevices={fetchDevices} />;
       case 'sensor':
         return <SensorCard device={device} fetchDevices={fetchDevices} />;
+      case 'lamp':
+        return <LampCard device={device} fetchDevices={fetchDevices} />;
+      case 'camera':
+        return <CameraCard device={device} fetchDevices={fetchDevices} />;  
+      case 'refrigerator':
+        return <RefrigeratorCard device={device} fetchDevices={fetchDevices} />;    
       // Add cases for other device types
       default:
         return (
