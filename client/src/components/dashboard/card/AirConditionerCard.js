@@ -148,7 +148,7 @@ const AirConditionerCard = ({ device, fetchDevices }) => {
           <h5 className="card-title mb-0">{device.name}</h5>
         </div>
         <p className="card-text"><strong>Type:</strong> {device.type}</p>
-        <p className="card-text"><strong>Status:</strong> {status ? 'Active' : 'Inactive'}</p>
+        <p className="card-text"><strong>Status:</strong> {status ? 'on' : 'off'}</p>
         <p className="card-text"><strong>Values:</strong> {device.values}</p>
         <p className="card-text">
           <div className="btn-group mt-2 ml-5">

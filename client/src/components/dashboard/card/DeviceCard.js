@@ -5,6 +5,7 @@ import LampCard from './LampCard';
 import CameraCard from './CameraCard';
 import RefrigeratorCard from './RefrigeratorCard';
 import RouterCard from './RouterCard';
+import TelevisionCard from './TelevisionCard';
 // Import other specific card components
 
 const DeviceCard = ({ device, fetchDevices }) => {
@@ -21,7 +22,9 @@ const DeviceCard = ({ device, fetchDevices }) => {
       case 'refrigerator':
         return <RefrigeratorCard device={device} fetchDevices={fetchDevices} />; 
       case 'router':
-        return <RouterCard device={device} fetchDevices={fetchDevices} />;     
+        return <RouterCard device={device} fetchDevices={fetchDevices} />; 
+      case 'television':
+        return <TelevisionCard device={device} fetchDevices={fetchDevices} />;        
       // Add cases for other device types
       default:
         return (

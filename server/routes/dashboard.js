@@ -275,6 +275,21 @@ router.put('/dashboard/devices/:device_id/mode', async (req, res) => {
 
 
 
+// get description of the house
+router.get("/house/:maison_id", async (req, res) => {
+  try {
+    const { maison_id } = req.params;
+    const house = await pool.query("SELECT description FROM maisons WHERE maison_id = $1", [maison_id]);
+    res.json(house.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+
+
+
 
 
 
