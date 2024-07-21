@@ -342,8 +342,10 @@ router.get('/devices/:device_id/values', async (req, res) => {
 
 
 
-router.get('/dashboard/devices/:device_id/values', async (req, res) => {
+router.put('/devices/:device_id/status', async (req, res) => {
+  console.log('Received PUT request:', req.params, req.body); // Add this line
   const { device_id } = req.params;
+  const { status } = req.body;
 
   try {
     const result = await pool.query('SELECT * FROM sensor_values WHERE device_id = $1 ORDER BY timestamp ASC', [device_id]);
@@ -358,7 +360,30 @@ router.get('/dashboard/devices/:device_id/values', async (req, res) => {
 });
 
 
+// Update device status
+router.put('/dashboard/devices/:device_id/status', async (req, res) => {
+  const deviceId = req.params.device_id;
+  const newStatus = req.body.status;
+  console.log('Updating device ID:', deviceId, 'with status:', newStatus);
 
+  try {
+    const result = await pool.query(
+      'UPDATE devices SET status = $1 WHERE device_id = $2 RETURNING *',
+      [newStatus, deviceId]
+    );
+    
+    console.log('Query result:', result); // Log query result
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Device not found' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error updating status:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 

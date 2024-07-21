@@ -10,7 +10,6 @@ const SensorCard = ({ device, fetchDevices }) => {
   const [showModal, setShowModal] = useState(false);
   const [parsedValues, setParsedValues] = useState([]);
   const intervalRef = useRef(null);
-  const lastValueRef = useRef(null);
   const timestampsRef = useRef(new Set());
 
   // Load values from localStorage
@@ -19,10 +18,7 @@ const SensorCard = ({ device, fetchDevices }) => {
     if (savedValues) {
       const values = JSON.parse(savedValues);
       setParsedValues(values);
-      if (values.length > 0) {
-        lastValueRef.current = values[values.length - 1].value;
-        values.forEach(item => timestampsRef.current.add(item.timestamp));
-      }
+      values.forEach(item => timestampsRef.current.add(item.timestamp));
     }
   }, [device.device_id]);
 
@@ -35,7 +31,6 @@ const SensorCard = ({ device, fetchDevices }) => {
   const fetchValues = async () => {
     try {
       const url = `http://localhost:5000/dashboard/devices/${device.device_id}/values`;
-      console.log('Fetching URL:', url);
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -43,36 +38,23 @@ const SensorCard = ({ device, fetchDevices }) => {
       }
 
       const data = await response.json();
-      console.log('Fetched data:', data);
 
       // Ensure values is an array
       const valuesArray = Array.isArray(data.values) ? data.values : [];
 
       if (valuesArray.length > 0) {
-        // Extract new values and timestamps
-        const newValues = valuesArray.map(item => ({
-          timestamp: item.timestamp,
-          value: item.value,
-        }));
+        const newValues = valuesArray.filter(item => !timestampsRef.current.has(item.timestamp));
 
-        // Filter out values that already exist in the state
-        const uniqueNewValues = newValues.filter(item => !timestampsRef.current.has(item.timestamp));
-        
-        if (uniqueNewValues.length > 0) {
-          // Update the state with new unique values
+        if (newValues.length > 0) {
           setParsedValues(prevValues => [
             ...prevValues,
-            ...uniqueNewValues
+            ...newValues
           ]);
 
-          // Update references
-          uniqueNewValues.forEach(item => {
+          newValues.forEach(item => {
             timestampsRef.current.add(item.timestamp);
-            lastValueRef.current = item.value; // Update last value
           });
         }
-      } else {
-        console.warn('No values found for the device.');
       }
     } catch (error) {
       console.error('Error fetching values:', error);
@@ -93,7 +75,8 @@ const SensorCard = ({ device, fetchDevices }) => {
   const updateStatusInDatabase = async (newStatus) => {
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:5000/dashboard/devices/${device.device_id}/status`, {
+      console.log(`Sending PUT request to update status to: ${newStatus} for device ID: ${device.device_id}`);
+      const response = await fetch(`http://localhost:5000/dashboard/dashboard/devices/${device.device_id}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -101,14 +84,16 @@ const SensorCard = ({ device, fetchDevices }) => {
         body: JSON.stringify({ status: newStatus }),
       });
 
+      console.log('Response status:', response.status);
       if (!response.ok) {
         throw new Error('Failed to update status');
       }
 
       const updatedDevice = await response.json();
+      console.log('Received updated device:', updatedDevice);
       setStatus(updatedDevice.status);
       setIsLoading(false);
-      fetchDevices();
+      fetchDevices(); // Refresh the device list after update
     } catch (error) {
       console.error('Error updating status:', error);
       setIsLoading(false);
@@ -117,10 +102,15 @@ const SensorCard = ({ device, fetchDevices }) => {
 
   const toggleStatus = () => {
     const newStatus = !status;
+    console.log(`Toggling status from ${status} to ${newStatus}`);
     updateStatusInDatabase(newStatus);
   };
 
-  const openModal = () => setShowModal(true);
+  const openModal = (e) => {
+    e.stopPropagation();
+    setShowModal(true);
+  };
+
   const closeModal = () => setShowModal(false);
 
   const data = {
@@ -156,7 +146,7 @@ const SensorCard = ({ device, fetchDevices }) => {
           <p className="card-text"><strong>Type:</strong> {device.type}</p>
           <p className="card-text"><strong>Status:</strong> {status ? 'on' : 'off'}</p>
           {isLoading && <p>Updating...</p>}
-          <Button variant="primary" onClick={(e) => { e.stopPropagation(); openModal(); }}>Show Graph</Button>
+          <Button variant="primary" onClick={openModal}>Show Graph</Button>
         </div>
       </div>
 
