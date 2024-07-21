@@ -85,6 +85,14 @@ CREATE TABLE users(
     FOREIGN KEY (maison_id) REFERENCES maisons(maison_id) ON DELETE CASCADE
   );
 
+
+CREATE TABLE sensor_values (
+  id SERIAL PRIMARY KEY,
+  device_id INT NOT NULL,
+  timestamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+  value NUMERIC NOT NULL,
+  FOREIGN KEY (device_id) REFERENCES devices(device_id) ON DELETE CASCADE
+);
 --fake users data
 
 insert into users (user_name, user_email, user_password) values ('henry', 'henryly213@gmail.com', 'kthl8822');

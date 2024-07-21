@@ -9,14 +9,20 @@ const SensorCard = ({ device, fetchDevices }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [parsedValues, setParsedValues] = useState([]);
-  const intervalRef = useRef(null); // Reference for the interval
-  const lastValueRef = useRef(null); // Reference to the last value
+  const intervalRef = useRef(null);
+  const lastValueRef = useRef(null);
+  const timestampsRef = useRef(new Set());
 
   // Load values from localStorage
   useEffect(() => {
     const savedValues = localStorage.getItem(`sensorValues_${device.device_id}`);
     if (savedValues) {
-      setParsedValues(JSON.parse(savedValues));
+      const values = JSON.parse(savedValues);
+      setParsedValues(values);
+      if (values.length > 0) {
+        lastValueRef.current = values[values.length - 1].value;
+        values.forEach(item => timestampsRef.current.add(item.timestamp));
+      }
     }
   }, [device.device_id]);
 
@@ -28,36 +34,45 @@ const SensorCard = ({ device, fetchDevices }) => {
   // Fetch values from the server
   const fetchValues = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/dashboard/dashboard/devices/${device.device_id}/values`);
+      const url = `http://localhost:5000/dashboard/devices/${device.device_id}/values`;
+      console.log('Fetching URL:', url);
+      const response = await fetch(url);
+
       if (!response.ok) {
-        throw new Error('Failed to fetch values');
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
+
       const data = await response.json();
-      console.log('Fetched values:', data.values); // Log fetched values
+      console.log('Fetched data:', data);
 
-      let valuesArray = [];
+      // Ensure values is an array
+      const valuesArray = Array.isArray(data.values) ? data.values : [];
 
-      if (Array.isArray(data.values)) {
-        valuesArray = data.values;
-      } else if (typeof data.values === 'number' || typeof data.values === 'string') {
-        // Wrap single value in an array with a timestamp
-        valuesArray = [{ timestamp: new Date().toISOString(), value: data.values }];
-      } else {
-        console.error('Fetched values are not in an expected format:', data.values);
-        return; // Exit if the format is unexpected
-      }
-
-      // Process fetched values
       if (valuesArray.length > 0) {
-        const firstValue = valuesArray[0].value;
-        // Update state only if the new value is different from the last recorded value
-        if (lastValueRef.current === null || firstValue !== lastValueRef.current) {
-          lastValueRef.current = firstValue; // Update the last value reference
+        // Extract new values and timestamps
+        const newValues = valuesArray.map(item => ({
+          timestamp: item.timestamp,
+          value: item.value,
+        }));
+
+        // Filter out values that already exist in the state
+        const uniqueNewValues = newValues.filter(item => !timestampsRef.current.has(item.timestamp));
+        
+        if (uniqueNewValues.length > 0) {
+          // Update the state with new unique values
           setParsedValues(prevValues => [
             ...prevValues,
-            { timestamp: new Date().toISOString(), value: firstValue }
+            ...uniqueNewValues
           ]);
+
+          // Update references
+          uniqueNewValues.forEach(item => {
+            timestampsRef.current.add(item.timestamp);
+            lastValueRef.current = item.value; // Update last value
+          });
         }
+      } else {
+        console.warn('No values found for the device.');
       }
     } catch (error) {
       console.error('Error fetching values:', error);
@@ -67,19 +82,18 @@ const SensorCard = ({ device, fetchDevices }) => {
   // Start or stop fetching values based on modal visibility
   useEffect(() => {
     if (showModal) {
-      fetchValues(); // Fetch initial values when opening modal
       intervalRef.current = setInterval(fetchValues, 5000); // Fetch every 5 seconds
     } else {
-      clearInterval(intervalRef.current); // Clear interval when closing modal
+      clearInterval(intervalRef.current);
     }
 
-    return () => clearInterval(intervalRef.current); // Cleanup on unmount
+    return () => clearInterval(intervalRef.current);
   }, [showModal]);
 
   const updateStatusInDatabase = async (newStatus) => {
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:5000/dashboard/dashboard/devices/${device.device_id}/status`, {
+      const response = await fetch(`http://localhost:5000/dashboard/devices/${device.device_id}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -94,7 +108,7 @@ const SensorCard = ({ device, fetchDevices }) => {
       const updatedDevice = await response.json();
       setStatus(updatedDevice.status);
       setIsLoading(false);
-      fetchDevices(); // Refresh the device list after update
+      fetchDevices();
     } catch (error) {
       console.error('Error updating status:', error);
       setIsLoading(false);
@@ -127,8 +141,8 @@ const SensorCard = ({ device, fetchDevices }) => {
     margin: '1rem',
     boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)',
     borderRadius: '10px',
-    backgroundColor: status ? '#d4edda' : '#f8d7da', // Green if on, red if off
-    cursor: 'pointer', // Changes cursor to pointer to indicate clickable
+    backgroundColor: status ? '#d4edda' : '#f8d7da',
+    cursor: 'pointer',
   };
 
   return (
