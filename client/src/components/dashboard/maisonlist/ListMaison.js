@@ -62,7 +62,7 @@ const ListMaisons = ({ allMaisons, setMaisonsChange }) => {
                   </Link>
                 </td>
                 <td>
-                  <Link to={`/devices/${maison.maison_id}`} className="btn btn-primary">
+                  <Link to={`/devices/${maison.maison_id}`} className="btn btn-info">
                     View Devices
                   </Link>
                 </td>

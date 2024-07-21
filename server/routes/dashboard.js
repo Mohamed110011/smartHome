@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { Router } = require("express");
 const pool = require("../db");
 const authorization = require("../middleware/authorization");
 
@@ -288,7 +289,57 @@ router.get("/house/:maison_id", async (req, res) => {
 });
 
 
+// Endpoint to update device values
+router.put('/dashboard/dashboard/devices/:device_id/values', async (req, res) => {
+  const { device_id } = req.params;
+  const { values } = req.body;
 
+  if (!values) {
+    return res.status(400).json({ error: 'New value is required' });
+  }
+
+  try {
+    // Fetch the current values
+    const result = await pool.query('SELECT values FROM devices WHERE device_id = $1', [device_id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Device not found' });
+    }
+
+    let currentValues = result.rows[0].values ? JSON.parse(result.rows[0].values) : [];
+
+    // Append the new value with the timestamp
+    currentValues.push({ value: values, timestamp: new Date().toISOString() });
+
+    // Update the values in the database
+    await pool.query('UPDATE devices SET values = $1 WHERE device_id = $2', [JSON.stringify(currentValues), device_id]);
+
+    res.status(200).json({ message: 'Values updated successfully', values: currentValues });
+  } catch (err) {
+    console.error('Error updating device values:', err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+// Endpoint to get device values
+router.get('/dashboard/devices/:device_id/values', async (req, res) => {
+  const { device_id } = req.params;
+
+  try {
+    // Fetch the current values
+    const result = await pool.query('SELECT values FROM devices WHERE device_id = $1', [device_id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Device not found' });
+    }
+
+    const currentValues = result.rows[0].values ? JSON.parse(result.rows[0].values) : [];
+
+    res.status(200).json({ values: currentValues });
+  } catch (err) {
+    console.error('Error fetching device values:', err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 
 
