@@ -6,6 +6,7 @@ const authorization = require("../middleware/authorization");
 
 
 
+
 // Get all Users sauf name="admin"
 router.get("/users", async (req, res) => {
   try {
@@ -382,6 +383,43 @@ router.put('/dashboard/devices/:device_id/status', async (req, res) => {
   } catch (error) {
     console.error('Error updating status:', error);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.post("/auth/google", async (req, res) => {
+  try {
+      const { tokenId } = req.body;
+      const ticket = await client.verifyIdToken({
+          idToken: tokenId,
+          audience: "YOUR_GOOGLE_CLIENT_ID"
+      });
+      const { email, name } = ticket.getPayload();
+      
+      // Check if user exists, if not create a new user, and generate a JWT token
+      // This is an example, modify it according to your user model and JWT setup
+      let user = await User.findOne({ email });
+      if (!user) {
+          user = new User({ email, name });
+          await user.save();
+      }
+      const token = jwt.sign({ userId: user._id }, "YOUR_JWT_SECRET", { expiresIn: "1h" });
+
+      res.json({ token });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json("Server Error");
   }
 });
 
