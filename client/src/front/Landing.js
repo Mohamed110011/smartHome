@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './styleLanding.css';
-import headerImage from './assets/header1.jpg';
-import plan1Image from './assets/plan-1.jpg';
-import plan2Image from './assets/plan-2.jpg';
-import plan3Image from './assets/plan-3.jpg';
+import headerImage from './assets/images2.png';
+import plan1Image from './assets/téléchargement22.jpg';
+import plan2Image from './assets/téléchargement12.jpeg';
+import plan3Image from './assets/téléchargement13.jpeg';
 import lounge1Image from './assets/lounge-1.jpg';
 import lounge2Image from './assets/lounge-2.jpg';
 import traveller1 from './assets/traveller-1.jpg';
@@ -260,7 +260,10 @@ const Landing = () => {
 
     return (
         <div>
-<div dangerouslySetInnerHTML={{ __html: htmlContent }} />        </div>
+<div dangerouslySetInnerHTML={{ __html: htmlContent }} /> 
+
+
+       </div>
     );
 };
 
